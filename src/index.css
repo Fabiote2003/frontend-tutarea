@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn-submit {
+        @apply bg-[#457B9D] hover:bg-sky-900 transition-colors uppercase font-semibold text-center py-2 text-lg text-white rounded-lg mt-5 cursor-pointer w-full
+    }
+}
+/* flex flex-col items-center text-white w-1/5 p-5 h-screen bg-fondo */
+@layer components {
+    .sidebar {
+        @apply fixed -left-full h-screen text-white w-3/4 md:w-1/5 p-5 bg-fondo transition-all md:flex md:static z-20
+    }
+}
+
+@layer components {
+    .activo {
+        @apply fixed left-0 h-screen transition-all flex md:static z-20
+    }
+}
+
+
+@layer components {
+    .nav-item {
+        @apply text-xl font-normal py-2 flex items-center gap-4 opacity-80 hover:opacity-100 transition-all font-mont
+    }
+}
+  
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: #22333B;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: #FFF;
+    border-radius: 20px;
+    border: 3px solid #22333B;
+  }
+
