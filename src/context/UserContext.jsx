@@ -22,7 +22,8 @@ export const UserProvaider = ({ children }) => {
       const rta = await loginAPI(user);
       if (rta.status === 200) {
         setUserLogued(rta);
-        navigate("/trabajos/perfil");
+        navigate("/trabajos/perfil")
+        return true
       }
     } catch (error) {
       return error("No se puedo realizar el Login");
@@ -30,11 +31,14 @@ export const UserProvaider = ({ children }) => {
   };
 
   const registerContext = async (user) => {
+    console.log("que llega al context?????", user);
     try {
       const rta = await registerAPI(user);
+      console.log("registerContext",rta);
       if (rta.status === 200) {
-        setUserEmailForLogin(rta.email);
-        navigate("/trabajo");
+        setUserEmailForLogin(rta.data.email);
+        return true
+        
       }
     } catch (error) {
       console.log("error de context usercontex catch error", error);

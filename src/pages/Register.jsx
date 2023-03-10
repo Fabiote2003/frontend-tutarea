@@ -13,57 +13,17 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const equalPassword = (pass1, pass2) => {
-    if (pass1 === pass2) return true;
-    else {
-      Swal.fire({
-        icon: "error",
-        title: "Password",
-        text: `Las contraseñas deben ser iguales!`,
-      });
-    }
-  };
-
-  const completarFormulario = (e) => {
-    setNuevoUsuario({
-      ...nuevoUsuario,
-      [e.target.name]: e.target.value,
+  const userSuccesRegister=async ()=>{
+    Swal.fire({
+      position: "center-center",
+      icon: "success",
+      title: "¡Usuario Registrado exitosamente!",
+      showConfirmButton: false,
+      timer: 2500,
     });
-  };
-
-  const crearUsuario = async (e) => {
-    e.preventDefault();
-
-    try {
-      const { data } = await clienteAxios.post(
-        "/usuario/registrar",
-        nuevoUsuario
-      );
-      console.log(data);
-      Swal.fire({
-        position: "center-center",
-        icon: "success",
-        title: "¡Usuario Registrado exitosamente!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      navigate("/");
-    } catch (error) {
-      let listaErrores;
-      if (error) {
-        listaErrores = error.response.data.message.map(
-          (message) => message.msg
-        );
-      }
-      console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Ocurrio un error al registrarse!",
-        text: `${listaErrores}`,
-      });
-    }
-  };
-
+    navigate("/")
+  } 
+ 
   return (
     <div className="flex font-mont">
       <div className="bg-[#A8DADC] w-1/2 h-screen"></div>
@@ -104,8 +64,11 @@ const Register = () => {
             onSubmit={async (values) => {
               try {
                 const rta = await registerContext(values);
-                console.log(rta);
-                navigate("/");
+                console.log("que mierda vuelve aca",rta);
+                if (rta) {
+                 await userSuccesRegister()
+                 
+                }
               } catch (error) {
                 console.log(
                   "Eror en el onSubmit del componente Register",
