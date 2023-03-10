@@ -6,14 +6,12 @@ export const loginAPI =async(user)=>{
         const res = await clienteAxios.post("/usuario/login",user)
         return res.data
     } catch (error) {
-        console.log("API userAPI LOGIN -----> 🤐🤐🤐🤐");
         return error.response.data;
     }
 }
 //Register
 export const registerAPI = async (user)=>{
 
-    console.log("Voy A viajar al back 😉😉😉😉😉",user);
     try {
         
         const res = await clienteAxios.post("/usuario/register",user)
