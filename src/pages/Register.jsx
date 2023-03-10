@@ -36,7 +36,7 @@ const Register = () => {
         </div>
 
         <div className="w-full md:w-1/2 h-full rounded-2xl  md:rounded-l-none bg-[#E7E5FB] md:rounded-r-2xl pl-10 pr-10 pt-5 pb-5	flex flex-col items-center justify-center">
-          <h1 className="text-3xl xl:text-5xl font-sans font-extrabold text-center text-[#2C4D7A]">
+          <h1 className="text-3xl xl:text-4xl font-sans font-extrabold text-center text-[#2C4D7A]">
             Bienvenido a TuTarea
           </h1>
 
@@ -64,7 +64,6 @@ const Register = () => {
             onSubmit={async (values) => {
               try {
                 const rta = await registerContext(values);
-                console.log("que mierda vuelve aca",rta);
                 if (rta) {
                  await userSuccesRegister()
                  
@@ -102,7 +101,7 @@ const Register = () => {
                   />
                   <ErrorMessage
                     component="p"
-                    className="text-red-600 text-sm"
+                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
                     name="name"
                   />
                 </div>
@@ -124,7 +123,7 @@ const Register = () => {
                   />
                   <ErrorMessage
                     component="p"
-                    className="text-red-600 text-sm"
+                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
                     name="email"
                   />
                 </div>
@@ -144,7 +143,7 @@ const Register = () => {
                   />
                   <ErrorMessage
                     component="p"
-                    className="text-red-600 text-sm"
+                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
                     name="password"
                   />
                 </div>
@@ -164,7 +163,7 @@ const Register = () => {
                   />
                   <ErrorMessage
                     component="p"
-                    className="text-red-600 text-sm"
+                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
                     name="confirmarPassword"
                   />
                 </div>

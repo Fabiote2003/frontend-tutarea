@@ -21,8 +21,9 @@ export const UserProvaider = ({ children }) => {
     try {
       const rta = await loginAPI(user);
       if (rta.status === 200) {
+        localStorage.setItem('token', rta.token);
         setUserLogued(rta);
-        navigate("/trabajos/perfil")
+        navigate("/trabajos")
         return true
       }
     } catch (error) {
@@ -51,8 +52,7 @@ export const UserProvaider = ({ children }) => {
         loginContext,
         registerContext,
         setUserEmailForLogin,
-        userEmailForLogin
-
+        userEmailForLogin,
       }}>
       {children}
     </userContext.Provider>
