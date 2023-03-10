@@ -3,10 +3,16 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "./../context/UserContext";
+import { RiEyeLine, RiEyeOffLine} from "react-icons/ri";
 const Login = () => {
+  
   const { loginContext, userEmailForLogin } = useUser();
-
-
+  
+  const [showPass,setShowPass]= useState(false)
+  
+  const handelShowPassword=()=>{
+    setShowPass(!showPass)
+  }
   return (
     <div className="flex font-mont">
       <div className="bg-[#A8DADC] w-1/2 h-screen"></div>
@@ -63,24 +69,30 @@ const Login = () => {
                     name="email"
                   />
                 </div>
-                <div className="mt-2 flex flex-col items-start w-full">
+                <div className=" mt-2 flex flex-col items-start w-full">
                   <label
                     htmlFor="email"
                     className="text-[#457B9D] uppercase text-md font-bold mb-1"
                   >
                     Contraseña
                   </label>
+                  <div className="relative w-full">
+
                   <Field
                     className="w-full p-1 rounded-lg"
-                    type="password"
+                    type={showPass ? "text":"password" }
                     id="password"
                     name="password"
-                  />
+                    />
+                  {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                            : <RiEyeOffLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                          }
+                    </div>
                   <ErrorMessage
                     component="p"
                     className="text-red-600 text-sm"
                     name="password"
-                  />
+                    />
                 </div>
 
                 <button className="btn-submit px-4">Login </button>
