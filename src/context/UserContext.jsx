@@ -46,6 +46,9 @@ export const UserProvaider = ({ children }) => {
       value={{
         loginContext,
         registerContext,
+        setUserEmailForLogin,
+        userEmailForLogin
+
       }}>
       {children}
     </userContext.Provider>
