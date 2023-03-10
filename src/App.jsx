@@ -13,11 +13,16 @@ import NuevoTrabajo from "./pages/NuevoTrabajo";
 import Trabajo from "./pages/Trabajo";
 import EditarTrabajo from "./pages/EditarTrabajo";
 
+//Provaider
+import {UserProvaider} from './context/UserContext'
+
 function App() {
 
   return (
    <>
     <BrowserRouter>
+    <UserProvaider>
+
       <Routes>
 
         <Route path="/" element={<AuthLayout />}>
@@ -34,6 +39,7 @@ function App() {
         </Route>
         
       </Routes>
+    </UserProvaider>
     </BrowserRouter>
    </>
   )
