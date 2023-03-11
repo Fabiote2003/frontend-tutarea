@@ -27,8 +27,9 @@ export const UserProvaider = ({ children }) => {
       if (rta.status === 200) {
         localStorage.setItem('token', rta.token);
         setUserLogued(rta);
+        setAuth(rta)
         navigate("/trabajos")
-        return true
+        return true;
       }else {
         Swal.fire({
           icon: 'error',

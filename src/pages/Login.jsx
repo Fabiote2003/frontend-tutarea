@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "./../context/UserContext";
 import { RiEyeLine, RiEyeOffLine} from "react-icons/ri";
 const Login = () => {
   
-  const { loginContext, userEmailForLogin } = useUser();
-  
+  const { loginContext, userEmailForLogin, auth, cargando } = useUser();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const redireccionarUsuario = () => {
+        if(auth.id) {
+          navigate("/trabajos")
+        }
+    }
+    redireccionarUsuario();
+  }, [auth]);
+
   const [showPass,setShowPass]= useState(false)
   
   const handelShowPassword=()=>{
@@ -33,7 +42,6 @@ const Login = () => {
                 .max(15, "no debe super un maximo de 15 caracteres"),
             })}
             onSubmit={async (values) => {
-              console.log(values);
               const rta = await loginContext(values);
               console.log("rta del componente LOGIN", rta);
             }}
