@@ -79,24 +79,6 @@ const Login = () => {
                   </label>
                   <div className="relative w-full">
 
-<<<<<<< HEAD
-                  <Field
-                    
-                    className="w-full p-1 rounded-lg"
-                    type={showPass ? "text":"password" }
-                    id="password"
-                    name="password"
-                    />
-                  {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
-                            : <RiEyeOffLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
-                          }
-                    </div>
-                  <ErrorMessage
-                    component="p"
-                    className="text-red-600 text-sm"
-                    name="password"
-                    />
-=======
                     <Field
                       className="w-full p-1 rounded-lg"
                       type={showPass ? "text":"password" }
@@ -113,7 +95,6 @@ const Login = () => {
                       className="pt-1 text-red-500 text-sm font-semibold uppercase"
                       name="password"
                       />
->>>>>>> b47047234fb07a2bc92c9dd3ac433c79dd97e67a
                 </div>
 
                 <button className="btn-submit px-4">Login </button>
