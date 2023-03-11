@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Await, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { loginAPI, perfilAPI, registerAPI } from "../apiReq/userAPI";
+import { allPoryectByUserAPI, loginAPI, perfilAPI, registerAPI } from "../apiReq/userAPI";
 import clienteAxios from "../config/clienteAxios";
 
 const userContext = createContext();
@@ -15,6 +15,7 @@ export const UserProvaider = ({ children }) => {
   const navigate = useNavigate();
   
   const [perfilUser,setPerfilUser]=useState("")
+  const [allProyectByUser,setAllProyectByUser]=useState("")
   //pongo los datos del usuario loguedado
   const [userLogued, setUserLogued] = useState([]);
   //creo este estado asi, una ves registrodo lo redirecciono al login y cargo los datos sel usuario sin volver a solicitarlos
@@ -22,16 +23,28 @@ export const UserProvaider = ({ children }) => {
   const [cargando, setCargando] = useState(true);
   const [auth, setAuth] = useState({});
 
-  const loginContext = async (user) => {
-    try {
-      const rta = await loginAPI(user);
-      if (rta.status === 200) {
-        localStorage.setItem('token', rta.token);
-        setUserLogued(rta);
-        setAuth(rta)
-        const perfil = await perfilAPI(rta.token)
-        console.log("perfil del usuario guau",perfil);
-        setPerfilUser(perfil)
+        const allPoryectByUserContext=async(id,token)=>{
+          console.log("PUTO 😡😡😡😡");
+          try {
+            const res = await allPoryectByUserAPI(id,token)
+            console.log("allPoryectByUserContext",res);
+            setAllProyectByUser(res)
+            return
+          } catch (error) {
+            console.log("error en el contex de usuario allPoryectByUserContext",error);
+          }
+        }
+        const loginContext = async (user) => {
+          try {
+            const rta = await loginAPI(user);
+            if (rta.status === 200) {
+              localStorage.setItem('token', rta.token);
+              setUserLogued(rta);
+              setAuth(rta)
+              const perfil = await perfilAPI(rta.token)
+              setPerfilUser(perfil)
+              await allPoryectByUserContext(rta.id,rta.token)
+              
         navigate("/trabajos")
         return true;
       }else {
@@ -69,6 +82,7 @@ export const UserProvaider = ({ children }) => {
     }
   };
 
+
   useEffect(() => {
     const autenticarUsuario = async () => {
       const token = localStorage.getItem('token');
@@ -85,6 +99,8 @@ export const UserProvaider = ({ children }) => {
       try {
         const {data} = await clienteAxios.get('/usuario/giu', config);
         setAuth(data);
+         
+        
       } catch (error) {
         console.log(error);
       }
@@ -104,7 +120,8 @@ export const UserProvaider = ({ children }) => {
         userEmailForLogin,
         auth,
         cargando,
-        perfilUser
+        perfilUser,
+        allProyectByUser
       }}>
       {children}
     </userContext.Provider>

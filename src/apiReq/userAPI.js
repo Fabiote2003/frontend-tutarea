@@ -33,10 +33,26 @@ export const perfilAPI= async(token)=>{
             headers: { Authorization: `Bearer ${token}` }
           };
         const res = await clienteAxios.get("/usuario/giu",config)
-        console.log("clienteAxios.apply.get()🔥🔥🔥",res);
+        
         return res.data.data
     } catch (error) {
-        onsole.log("error en userAPI perfilAPI",error);
+        console.log("error en userAPI perfilAPI",error);
+        return error.response
+    }
+}
+
+//Todos los proyectos de un usuario
+
+export const allPoryectByUserAPI=async(id,token)=>{
+    try {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+          };
+        const res = await clienteAxios.get(`/usuario/proyectByUser/${id}`,config)
+        console.log("los proyectos de un usuario", res);
+        return res.data.proyectByUser
+    } catch (error) {
+        console.log("error en userAPI allPoryectByUser",error);
         return error.response
     }
 }
