@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Formik, Form, Field, ErrorMessage } from "formik"; //, ErrorMessage
 import * as Yup from "yup";
-
+import { RiEyeLine, RiEyeOffLine} from "react-icons/ri";
 import { useUser } from "./../context/UserContext";
 
 import Swal from "sweetalert2";
@@ -12,6 +12,12 @@ const Register = () => {
   const { registerContext } = useUser();
 
   const navigate = useNavigate();
+
+  const [showPass,setShowPass]= useState(false)
+  
+  const handelShowPassword=()=>{
+    setShowPass(!showPass)
+  }
 
   const userSuccesRegister=async ()=>{
     Swal.fire({
@@ -134,18 +140,24 @@ const Register = () => {
                   >
                     Contraseña
                   </label>
+                  <div className="relative w-full">
+
                   <Field
-                    type="password"
+                    type={showPass ? "text":"password" }
                     name="password"
                     id="password"
                     className="w-full p-1 pl-3 rounded-lg"
                     placeholder="Ingresa tu password"
-                  />
+                    />
                   <ErrorMessage
                     component="p"
                     className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
                     name="password"
-                  />
+                    />
+                  {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                            : <RiEyeOffLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                          }
+                </div>
                 </div>
                 <div className="mt-2 flex flex-col items-start w-full relative pb-3">
                   <label
@@ -154,18 +166,24 @@ const Register = () => {
                   >
                     Confirmar Contraseña
                   </label>
+                  <div className="relative w-full">
+
                   <Field
-                    type="password"
+                    type={showPass ? "text":"password" }
                     name="confirmarPassword"
                     id="confirmarPassword"
                     className="w-full p-1 pl-3 rounded-lg"
                     placeholder="Repita su contraseña"
-                  />
+                    />
                   <ErrorMessage
                     component="p"
                     className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
                     name="confirmarPassword"
-                  />
+                    />
+                    {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                            : <RiEyeOffLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                          }
+                  </div>
                 </div>
 
                 <button className="btn-submit" type="submit">
