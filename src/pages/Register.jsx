@@ -29,7 +29,6 @@ const Register = () => {
     });
     navigate("/")
   } 
- 
   return (
     <div className="flex font-mont">
       <div className="bg-[#A8DADC] w-1/2 h-screen"></div>
@@ -67,19 +66,15 @@ const Register = () => {
                 )
                 .required("Por favor confirma tu contraseña"),
             })}
-            onSubmit={async (values) => {
-              try {
-                const rta = await registerContext(values);
-                if (rta) {
-                 await userSuccesRegister()
-                 
-                }
-              } catch (error) {
-                console.log(
-                  "Eror en el onSubmit del componente Register",
-                  error
-                );
-              }
+            onSubmit={async (values, {resetForm}) => {
+                  const rta = await registerContext(values);
+                  if (rta === 200) {
+                    await userSuccesRegister()
+                  }else {
+                    resetForm({});
+                    console.log("ERROR")
+                  }
+               
             }}
             //esta funcio es de formik, y se utiliza para cargar los datos en el fomulario, es decir, formik carga inicialmete los datos vacios que se encuentran en el initialValue(),
             //luego cuando queremos editar y cargar con los datos que recogemos con el params, devemos recargar el formulario con los datos obtenido, enableReinitialize
@@ -151,7 +146,7 @@ const Register = () => {
                     />
                   <ErrorMessage
                     component="p"
-                    className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
+                    className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-5 left-0"
                     name="password"
                     />
                   {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
@@ -177,7 +172,7 @@ const Register = () => {
                     />
                   <ErrorMessage
                     component="p"
-                    className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
+                    className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-5 left-0"
                     name="confirmarPassword"
                     />
                     {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
