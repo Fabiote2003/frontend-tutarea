@@ -4,10 +4,12 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "./../context/UserContext";
 import { RiEyeLine, RiEyeOffLine} from "react-icons/ri";
+
 const Login = () => {
   
   const { loginContext, userEmailForLogin, auth, cargando } = useUser();
   const navigate = useNavigate();
+  
   useEffect(() => {
     const redireccionarUsuario = () => {
         if(auth.id) {

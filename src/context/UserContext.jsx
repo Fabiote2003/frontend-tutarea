@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { loginAPI, registerAPI } from "../apiReq/userAPI";
+import { loginAPI, perfilAPI, registerAPI } from "../apiReq/userAPI";
 import clienteAxios from "../config/clienteAxios";
 
 const userContext = createContext();
@@ -13,7 +13,8 @@ export const useUser = () => {
 
 export const UserProvaider = ({ children }) => {
   const navigate = useNavigate();
-
+  
+  const [perfilUser,setPerfilUser]=useState("")
   //pongo los datos del usuario loguedado
   const [userLogued, setUserLogued] = useState([]);
   //creo este estado asi, una ves registrodo lo redirecciono al login y cargo los datos sel usuario sin volver a solicitarlos
@@ -28,6 +29,9 @@ export const UserProvaider = ({ children }) => {
         localStorage.setItem('token', rta.token);
         setUserLogued(rta);
         setAuth(rta)
+        const perfil = await perfilAPI(rta.token)
+        console.log("perfil del usuario guau",perfil);
+        setPerfilUser(perfil)
         navigate("/trabajos")
         return true;
       }else {
@@ -99,7 +103,8 @@ export const UserProvaider = ({ children }) => {
         setUserEmailForLogin,
         userEmailForLogin,
         auth,
-        cargando
+        cargando,
+        perfilUser
       }}>
       {children}
     </userContext.Provider>
