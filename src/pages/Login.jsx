@@ -15,7 +15,7 @@ const Login = () => {
         }
     }
     redireccionarUsuario();
-  }, [auth]);
+  }, [auth, navigate]);
 
   const [showPass,setShowPass]= useState(false)
   
