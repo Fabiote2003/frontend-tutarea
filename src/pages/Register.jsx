@@ -41,7 +41,7 @@ const Register = () => {
           <img src="../../src/assets/personas-estudiando.svg" />
         </div>
 
-        <div className="w-full md:w-1/2 h-full rounded-2xl  md:rounded-l-none bg-[#E7E5FB] md:rounded-r-2xl pl-10 pr-10 pt-5 pb-5	flex flex-col items-center justify-center">
+        <div className="w-full md:w-1/2 h-full rounded-2xl  md:rounded-l-none bg-[#E7E5FB] md:rounded-r-2xl pl-10 pr-10 pb-5	flex flex-col items-center justify-center">
           <h1 className="text-3xl xl:text-4xl font-sans font-extrabold text-center text-[#2C4D7A]">
             Bienvenido a TuTarea
           </h1>
@@ -51,7 +51,7 @@ const Register = () => {
             validationSchema={Yup.object({
               name: Yup.string()
                 .required("el nombre es requerido")
-                .min(3, "el nombre debe contener como minimo 3 caracteres")
+                .min(3, "debe contener como minimo 3 caracteres")
                 .max(90, "el nombre debe contener un maximo de 90 caracteres"),
               email: Yup.string()
                 .email("debe ser un tipo de email valido")
@@ -90,7 +90,7 @@ const Register = () => {
                 className="flex flex-col items-center mt-1 w-full sm:w-4/5"
                 onSubmit={handleSubmit}
               >
-                <div className="mt-2 flex flex-col items-start w-full">
+                <div className="flex flex-col items-start w-full relative pb-3">
                   <label
                     htmlFor="name"
                     className="text-[#457B9D] uppercase text-md font-bold mb-1"
@@ -107,12 +107,12 @@ const Register = () => {
                   />
                   <ErrorMessage
                     component="p"
-                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
+                    className="text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
                     name="name"
                   />
                 </div>
 
-                <div className="mt-2 flex flex-col items-start w-full">
+                <div className="mt-2 flex flex-col items-start w-full relative pb-3">
                   <label
                     htmlFor="email"
                     className="text-[#457B9D] uppercase text-md font-bold mb-1"
@@ -129,11 +129,11 @@ const Register = () => {
                   />
                   <ErrorMessage
                     component="p"
-                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
+                    className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
                     name="email"
                   />
                 </div>
-                <div className="mt-2 flex flex-col items-start w-full">
+                <div className="mt-2 flex flex-col items-start w-full relative pb-3">
                   <label
                     htmlFor="password"
                     className="text-[#457B9D] uppercase text-md font-bold mb-1"
@@ -151,7 +151,7 @@ const Register = () => {
                     />
                   <ErrorMessage
                     component="p"
-                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
+                    className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
                     name="password"
                     />
                   {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
@@ -159,7 +159,7 @@ const Register = () => {
                           }
                 </div>
                 </div>
-                <div className="mt-2 flex flex-col items-start w-full">
+                <div className="mt-2 flex flex-col items-start w-full relative pb-3">
                   <label
                     htmlFor="confirmarPassword"
                     className="text-[#457B9D] uppercase text-md font-bold mb-1"
@@ -177,7 +177,7 @@ const Register = () => {
                     />
                   <ErrorMessage
                     component="p"
-                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
+                    className="pt-1 text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
                     name="confirmarPassword"
                     />
                     {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>

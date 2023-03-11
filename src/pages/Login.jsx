@@ -26,9 +26,9 @@ const Login = () => {
             validationSchema={Yup.object({
               email: Yup.string()
                 .email("debe ser un tipo de email valido")
-                .required("el campo es requerido"),
+                .required("el email es requerido"),
               password: Yup.string()
-                .required("el campo es requerido")
+                .required("la contraseña es requerida")
                 .min(6, "debe contener al menos 6 caracteres")
                 .max(15, "no debe super un maximo de 15 caracteres"),
             })}
@@ -62,10 +62,11 @@ const Login = () => {
                     name="email"
                     type="name"
                     id="email"
+                    placeholder="Ingrese tu email"
                   />
                   <ErrorMessage
                     component="p"
-                    className="text-red-600 text-sm"
+                    className="pt-1 text-red-500 text-sm font-semibold uppercase"
                     name="email"
                   />
                 </div>
@@ -78,6 +79,7 @@ const Login = () => {
                   </label>
                   <div className="relative w-full">
 
+<<<<<<< HEAD
                   <Field
                     
                     className="w-full p-1 rounded-lg"
@@ -94,6 +96,24 @@ const Login = () => {
                     className="text-red-600 text-sm"
                     name="password"
                     />
+=======
+                    <Field
+                      className="w-full p-1 rounded-lg"
+                      type={showPass ? "text":"password" }
+                      id="password"
+                      name="password"
+                      placeholder="Ingrese su contraseña"
+                      />
+                    {showPass ? <RiEyeLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                              : <RiEyeOffLine onClick={handelShowPassword} className='absolute right-2 botton-1 top-1/2 -translate-y-1/2 text-gray-500 hover:cursor-pointer'/>
+                            }
+                      </div>
+                    <ErrorMessage
+                      component="p"
+                      className="pt-1 text-red-500 text-sm font-semibold uppercase"
+                      name="password"
+                      />
+>>>>>>> b47047234fb07a2bc92c9dd3ac433c79dd97e67a
                 </div>
 
                 <button className="btn-submit px-4">Login </button>
