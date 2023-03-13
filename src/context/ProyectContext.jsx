@@ -1,5 +1,5 @@
 import React,{createContext,useContext,useState} from 'react'
-import {createProyectAPI} from './../apiReq/proyectAPI'
+import {createProyectAPI,listOneProyectAPI} from './../apiReq/proyectAPI'
 const proyectContext = createContext()
 
 export const useProyect =()=>{
@@ -19,12 +19,22 @@ const createProyectContext=async(proyect,token)=>{
             console.log("ERRRO en el createProyectContext catch",error);
         }
 }
-
+const listOneProyectContext=async(id,token)=>{
+    try {
+        const rta = await listOneProyectAPI(id,token)
+        return rta
+        
+    } catch (error) {
+        console.log("ERRRO en el listOneProyectContext catch",error);
+    }
+}
 
 
     return (
        <proyectContext.Provider value={{
-        createProyectContext
+        createProyectContext,
+        listOneProyectContext
+        
        }}>
         {children}
        </proyectContext.Provider> 

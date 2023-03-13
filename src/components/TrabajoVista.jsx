@@ -9,7 +9,7 @@ const TrabajoVista = ({proyect}) => {
             <p className='uppercase font-black font-inter text-md text-[#1D3557]'>Para: <span className='text-[#969393]'>{proyect.customer}</span></p>
             <p className='uppercase font-black font-inter text-md text-[#1D3557]' >Fechad de entrega: <span className='text-[#969393]'>{proyect.dateEnd}</span></p>
         </div>
-        <Link className='bg-fondo p-2 text-center cursor-pointer text-white rounded-md uppercase font-mont font-normal'>Ver Proyecto</Link>
+        <Link to={`/trabajos/${proyect.id}`}  className='bg-fondo p-2 text-center cursor-pointer text-white rounded-md uppercase font-mont font-normal'>Ver Proyecto</Link>
     </div>
   )
 }
