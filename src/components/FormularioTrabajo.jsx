@@ -5,28 +5,31 @@ import Swal from "sweetalert2";
 
 import {useUser} from './../context/UserContext'
 import {useProyect} from './../context/ProyectContext'
+import { useNavigate } from "react-router-dom";
 
 
 const FormularioTrabajo = () => {
   
-  
+  const navigate = useNavigate();
   const {auth}=useUser()
   const {createProyectContext}=useProyect()
 
   const proyectSuccesCreate=async (msg)=>{
     Swal.fire({
-      position: "center-center",
+      position: "center",
       icon: "success",
       title: "¡Proyecto "+`"`+ msg+`"` +" se a creado  exitosamente!",
       showConfirmButton: false,
       timer: 3000,
     });
-    navigate("/")
+    setTimeout(() => {
+      navigate("/trabajos")
+    }, 500);
   } 
 
   const [proyect, setProyect] = useState({
     name: "",
-    descripcion: "",
+    description: "",
     dateEnd: "",
     customer: "",
     createUser:auth.id 
@@ -40,7 +43,7 @@ const FormularioTrabajo = () => {
           .required("el nombre es requerido")
           .min(3, "el nombre debe contener como minimo 3 caracteres")
           .max(90, "el nombre debe contener un maximo de 90 caracteres"),
-        descripcion: Yup.string()
+        description: Yup.string()
           .required("el campo es requerido")
           .min(3, "el nombre debe contener como minimo 3 caracteres")
           .max(90, "el nombre debe contener un maximo de 90 caracteres"),
@@ -53,7 +56,8 @@ const FormularioTrabajo = () => {
           .max(90, "el nombre debe contener un maximo de 90 caracteres"),
       })}
       onSubmit={async (values,{resetForm}) => {
-        const rta= await createProyectContext(values,auth.token)
+        const token = localStorage.getItem('token')
+        const rta= await createProyectContext(values,token)
         if (rta.data.status === 200) {
           await proyectSuccesCreate(rta.data.data.name)
           resetForm({});
@@ -77,7 +81,6 @@ const FormularioTrabajo = () => {
             >
               Nombre
             </label>
-           
 
             <Field
               type="text"
@@ -86,31 +89,32 @@ const FormularioTrabajo = () => {
               placeholder="Ingrese el nombre del trabajo"
               className="placeholder:font-mont w-full mt-1 border rounded-sm placeholder:text-sm focus:outline-[#4D9C9C] p-1"
             />
+
             <ErrorMessage
               component="p"
-              className="text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
+              className="text-red-500 text-[12px] font-bold uppercase font-mont"
               name="name"
             />
            
           </div>
           <div className="mb-2">
             <label
-              htmlFor="descripcion"
+              htmlFor="description"
               className="text-fondo uppercase font-mont text-sm font-semibold"
             >
               Descripción
             </label>
             <Field
               type="text"
-              id="descripcion"
-              name="descripcion"
+              id="description"
+              name="description"
               placeholder="Ingrese una descripción"
               className="placeholder:font-mont w-full mt-1 border rounded-sm placeholder:text-sm focus:outline-[#4D9C9C] p-1"
             />
             <ErrorMessage
               component="p"
-              className="text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
-              name="descripcion"
+              className="text-red-500 text-[12px] font-bold uppercase font-mont"
+              name="description"
             />
           </div>
           <div className="mb-2">
@@ -129,7 +133,7 @@ const FormularioTrabajo = () => {
             />
             <ErrorMessage
               component="p"
-              className="text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
+              className="text-red-500 text-[12px] font-bold uppercase font-mont"
               name="dateEnd"
             />
           </div>
@@ -149,7 +153,7 @@ const FormularioTrabajo = () => {
             />
             <ErrorMessage
               component="p"
-              className="text-red-500 text-[12px] font-bold uppercase absolute -bottom-2 left-0"
+              className="text-red-500 text-[12px] font-bold uppercase font-mont"
               name="customer"
             />
           </div>

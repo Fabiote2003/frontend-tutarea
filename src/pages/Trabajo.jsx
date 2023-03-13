@@ -6,23 +6,19 @@ import ModalTarea from '../components/ModalTarea'
 import { Link, useParams } from 'react-router-dom';
 import {useProyect} from './../context/ProyectContext'
 import {useUser} from './../context/UserContext'  
+import { formatearFecha } from '../helpers/formaterFecha';
+
 const Trabajo = () => {
-  const {auth}=useUser()
-  const {listOneProyectContext}=useProyect()
-  const [proyect,setProyect] = useState({})
-  const {id} = useParams()
+  const {obtenerProyecto, proyect, cargando} = useProyect();
+  const params = useParams()
   const [openModal, setOpenModal] = useState(false);
 
-  console.log("auth",auth.token);
-  console.log("params" ,id);
+  useEffect(() => {
+    obtenerProyecto(params.id);
+  }, [])
   
-  useEffect(async()=>{
-    const rta = await listOneProyectContext(id,auth.token)
-    setProyect(rta.data)
-  },[])
   
-
-  console.log("rta front Trabajo 😎👽",proyect.name)
+  if(cargando) return 'Cargando...'
   
   return (
     <div>
@@ -32,7 +28,7 @@ const Trabajo = () => {
           className='flex items-center gap-2 bg-fondo text-white uppercase text-center font-mont font-semibold p-2 mt-3 sm:mt-0 rounded-md'><img src='../src/assets/edit-alt-solid-24.png' className='md:w-10 md:h-10 lg:w-8 lg:h-8'/>Editar Trabajo</Link>  
         </div>
         <p className='font-mont font-bold mt-3 text-fondo'>Descripción: <span className='font-semibold text-[#777777]'>{proyect.description}</span></p>
-        <p className='uppercase text-xl text-center text-[#003049] font-black mt-3 font-inter'>{proyect.dateEnd}</p>
+        <p className='uppercase text-xl text-center text-[#003049] font-black mt-3 font-inter'>entregar antes del {proyect.dateEnd?.split('T')[0]}</p>
         <div className='flex flex-col mt-5 xl:flex-row w-full'>
             <div className='flex flex-col items-center p-5 lg:w-4/6'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>

@@ -7,17 +7,20 @@ import { RiEyeLine, RiEyeOffLine} from "react-icons/ri";
 
 const Login = () => {
   
-  const { loginContext, userEmailForLogin, auth, cargando } = useUser();
+  const { loginContext, userEmailForLogin, auth } = useUser();
   const navigate = useNavigate();
   
-  useEffect(() => {
-    const redireccionarUsuario = () => {
-        if(auth.id) {
-          navigate("/trabajos")
-        }
-    }
-    redireccionarUsuario();
-  }, [auth, navigate]);
+  // useEffect(() => {
+  //   console.log(auth);
+  //   const redireccionarUsuario = () => {
+  //       if(auth.id) {
+  //         navigate("/trabajos")
+  //         return;
+  //       }
+  //       console.log('No se ha logueado nadie')
+  //   }
+  //   redireccionarUsuario();
+  // }, [auth, navigate]);
 
   const [showPass,setShowPass]= useState(false)
   
@@ -45,7 +48,6 @@ const Login = () => {
             })}
             onSubmit={async (values) => {
               const rta = await loginContext(values);
-              console.log("rta del componente LOGIN", rta);
             }}
             //esta funcio es de formik, y se utiliza para cargar los datos en el fomulario, es decir, formik carga inicialmete los datos vacios que se encuentran en el initialValue(),
             //luego cuando queremos editar y cargar con los datos que recogemos con el params, devemos recargar el formulario con los datos obtenido, enableReinitialize
@@ -107,7 +109,7 @@ const Login = () => {
                       />
                 </div>
 
-                <button className="btn-submit px-4">Login </button>
+                <button className="btn-submit px-4" type="submit">Login </button>
               </Form>
             )}
           </Formik>

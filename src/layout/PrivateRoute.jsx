@@ -6,7 +6,7 @@ const PrivateRoute = () => {
   const [mostrarMenu, setMostrarMenu] = useState(false);
 
   const {auth, cargando} = useUser();
-  console.log(auth)
+  
   if(cargando) return "Cargando..."
 
   return (

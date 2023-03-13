@@ -19,7 +19,7 @@ const Register = () => {
     setShowPass(!showPass)
   }
 
-  const userSuccesRegister=async ()=>{
+  const userSuccesRegister = ()=>{
     Swal.fire({
       position: "center-center",
       icon: "success",
@@ -66,12 +66,12 @@ const Register = () => {
                 )
                 .required("Por favor confirma tu contraseña"),
             })}
-            onSubmit={async (values, {resetForm}) => {
+            onSubmit={async (values) => {
                   const rta = await registerContext(values);
-                  if (rta === 200) {
-                    await userSuccesRegister()
+                  console.log("REGISTRANDO", rta);
+                  if (rta) {
+                    userSuccesRegister()
                   }else {
-                    resetForm({});
                     console.log("ERROR")
                   }
                

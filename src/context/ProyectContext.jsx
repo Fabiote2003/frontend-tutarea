@@ -9,6 +9,27 @@ export const useProyect =()=>{
 
 export const ProyectProvaider =({children})=>{
 
+  const [proyect,setProyect] = useState({})
+  const [cargando, setCargando] = useState(false);
+
+  const obtenerProyecto = async (id) => {
+    setCargando(true)
+    const token = localStorage.getItem('token');
+    if(!token) {
+        setCargando(false);
+        return;
+    }
+
+    try {
+        const res = await  listOneProyectAPI(id, token);
+        setProyect(res.data)
+    } catch(error) {
+        console.log('Error en obtener proyecto: ', error);
+    }
+
+    setCargando(false);
+  }
+
 const createProyectContext=async(proyect,token)=>{
         
         try {
@@ -33,8 +54,9 @@ const listOneProyectContext=async(id,token)=>{
     return (
        <proyectContext.Provider value={{
         createProyectContext,
-        listOneProyectContext
-        
+        listOneProyectContext,
+        obtenerProyecto,
+        proyect
        }}>
         {children}
        </proyectContext.Provider> 

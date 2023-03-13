@@ -14,39 +14,48 @@ export const useUser = () => {
 export const UserProvaider = ({ children }) => {
   const navigate = useNavigate();
   
-  const [perfilUser,setPerfilUser]=useState("")
-  const [allProyectByUser,setAllProyectByUser]=useState("")
-  //pongo los datos del usuario loguedado
-  const [userLogued, setUserLogued] = useState([]);
+  const [allProyectByUser,setAllProyectByUser]=useState([]);
+  const [perfil, setPerfil] = useState({});
   //creo este estado asi, una ves registrodo lo redirecciono al login y cargo los datos sel usuario sin volver a solicitarlos
   const [userEmailForLogin, setUserEmailForLogin] = useState("");
   const [cargando, setCargando] = useState(true);
   const [auth, setAuth] = useState({});
 
-        const allPoryectByUserContext=async(id,token)=>{
-          console.log("PUTO 😡😡😡😡");
-          try {
-            const res = await allPoryectByUserAPI(id,token)
-            console.log("allPoryectByUserContext",res);
-            setAllProyectByUser(res)
-            return
-          } catch (error) {
-            console.log("error en el contex de usuario allPoryectByUserContext",error);
-          }
-        }
-        const loginContext = async (user) => {
-          try {
-            const rta = await loginAPI(user);
-            if (rta.status === 200) {
-              localStorage.setItem('token', rta.token);
-              setUserLogued(rta);
-              setAuth(rta)
-              const perfil = await perfilAPI(rta.token)
-              setPerfilUser(perfil)
-              await allPoryectByUserContext(rta.id,rta.token)
-              
-        navigate("/trabajos")
-        return true;
+
+  const allPoryectByUserContext= async() => {
+
+    const token = localStorage.getItem('token');
+
+
+    if(!token) {
+      return;
+    }
+    
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    
+    try {
+      const {data} = await clienteAxios.get(`/usuario/proyectByUser/${auth.id}`,config)
+      setAllProyectByUser(data)
+    } catch (error) {
+        console.log("error en el contex de usuario allPoryectByUserContext",error);
+    }                                          
+  }
+
+  useEffect(() => {
+    allPoryectByUserContext();
+  }, [auth]);
+
+  const loginContext = async (user) => {
+      try {
+        const rta = await loginAPI(user);
+        if (rta.status === 200) {
+            localStorage.setItem('token', rta.token);
+            await obtenerPerfil(rta.token);
+            await allPoryectByUserContext(rta.id, rta.token);
+            navigate('/trabajos')
+            return true;
       }else {
         Swal.fire({
           icon: 'error',
@@ -56,7 +65,7 @@ export const UserProvaider = ({ children }) => {
         })
       }
     } catch (error) {
-      return error("No se puedo realizar el Login");
+      console.log("Error de login",error);
     }
   };
 
@@ -64,7 +73,6 @@ export const UserProvaider = ({ children }) => {
     console.log("que llega al context?????", user);
     try {
       const rta = await registerAPI(user);
-      console.log("registerContext",rta);
       if (rta.status === 200) {
         setUserEmailForLogin(rta.data.email);
         return true
@@ -82,6 +90,16 @@ export const UserProvaider = ({ children }) => {
     }
   };
 
+  const obtenerPerfil = async (token) => {
+
+    try {
+      const res = await perfilAPI(token);
+      setAuth(res);
+    } catch (error) {
+      console.log("Error de perfil de usuario", error);
+    }
+
+  } 
 
   useEffect(() => {
     const autenticarUsuario = async () => {
@@ -99,7 +117,6 @@ export const UserProvaider = ({ children }) => {
       try {
         const {data} = await clienteAxios.get('/usuario/giu', config);
         setAuth(data);
-         
         
       } catch (error) {
         console.log(error);
@@ -120,8 +137,9 @@ export const UserProvaider = ({ children }) => {
         userEmailForLogin,
         auth,
         cargando,
-        perfilUser,
-        allProyectByUser
+        allProyectByUser,
+        perfil,
+        obtenerPerfil
       }}>
       {children}
     </userContext.Provider>
