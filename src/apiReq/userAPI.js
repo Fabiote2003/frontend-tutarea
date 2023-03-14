@@ -34,7 +34,7 @@ export const perfilAPI= async(token)=>{
           };
         const res = await clienteAxios.get("/usuario/giu",config)
         
-        return res.data.data
+        return res.data
     } catch (error) {
         console.log("error en userAPI perfilAPI",error);
         return error.response

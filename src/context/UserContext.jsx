@@ -45,7 +45,7 @@ export const UserProvaider = ({ children }) => {
 
   useEffect(() => {
     allPoryectByUserContext();
-  }, [auth]);
+  }, [auth,navigate]);
 
   const loginContext = async (user) => {
       try {
