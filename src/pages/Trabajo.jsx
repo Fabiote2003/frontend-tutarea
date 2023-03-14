@@ -12,6 +12,7 @@ const Trabajo = () => {
   const {obtenerProyecto, proyect, cargando} = useProyect();
   const params = useParams()
   const [openModal, setOpenModal] = useState(false);
+  const {auth}=useUser()
 
   useEffect(() => {
     obtenerProyecto(params.id);
@@ -34,13 +35,15 @@ const Trabajo = () => {
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>
                 <ModalTarea openModal={openModal} setOpenModal={setOpenModal}/> 
                 <Progress done={50}/>
-                <button 
+                { auth.id == proyect.createUser ? <button 
                   className='md:self-start py-2 px-3 bg-[#6BDBD4] rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3'
                   onClick={() => setOpenModal(true)}
                   >
                   <img src='../../src/assets/plus.png'/>
                   Nueva tarea
-                </button>
+                </button> : 
+                null
+                }
                 <a href='#integrantes'
                   className='md:self-start lg:hidden py-2 px-3 bg-fondo rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3 cursor-pointer'
                   >
