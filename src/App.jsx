@@ -16,6 +16,7 @@ import EditarTrabajo from "./pages/EditarTrabajo";
 //Provaider
 import {UserProvaider} from './context/UserContext'
 import {ProyectProvaider} from './context/ProyectContext'
+import {TaskProvider} from './context/TaskContext'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
     <BrowserRouter>
     <UserProvaider>
       <ProyectProvaider>
+        <TaskProvider>
 
       <Routes>
 
@@ -41,6 +43,7 @@ function App() {
         </Route>
         
       </Routes>
+        </TaskProvider>
       </ProyectProvaider>
     </UserProvaider>
     </BrowserRouter>

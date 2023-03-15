@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Await, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { allPoryectByUserAPI, loginAPI, perfilAPI, registerAPI } from "../apiReq/userAPI";
 import clienteAxios from "../config/clienteAxios";
