@@ -51,6 +51,7 @@ export const UserProvaider = ({ children }) => {
       try {
         const rta = await loginAPI(user);
         if (rta.status === 200) {
+          console.log("🔥😎🔥😎🔥😎" ,rta);
             localStorage.setItem('token', rta.token);
             await obtenerPerfil(rta.token);
             await allPoryectByUserContext(rta.id, rta.token);
@@ -94,7 +95,10 @@ export const UserProvaider = ({ children }) => {
 
     try {
       const res = await perfilAPI(token);
-      setAuth(res);
+
+      const resWithToken = {...res,token}
+      console.log("😪😪😪😪",resWithToken);
+      setAuth(resWithToken);
     } catch (error) {
       console.log("Error de perfil de usuario", error);
     }
