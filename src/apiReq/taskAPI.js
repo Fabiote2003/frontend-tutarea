@@ -8,7 +8,7 @@ export const createTaskAPI =async(idProyect,task,token)=>{
         const config = {
             headers: { Authorization: `Bearer ${token}` }
           };
-          const res = await clienteAxios(`/task/${idProyect}`,task,config)
+          const res = await clienteAxios.post(`/tarea/${idProyect}`,task,config)
           return res.data
     } catch (error) {
         console.log("ERROR en taskAPI create");

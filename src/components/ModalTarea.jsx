@@ -4,12 +4,12 @@ import { Formik, Form, Field, ErrorMessage} from "formik"; //, ErrorMessage
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 
-import { useUser } from "./../context/UserContext";
+
 import { useProyect } from "./../context/ProyectContext";
-import { useParams } from "react-router-dom";
+import {useTask} from './../context/TaskContext'    
 
-function ModalTarea({ openModal, setOpenModal,idProyect,idUser,tokenUser }) {
-
+function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
+  const {creatTaskContext}=useTask()
   const {proyect}=useProyect()
   
   const {id} = proyect //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
@@ -22,7 +22,19 @@ function ModalTarea({ openModal, setOpenModal,idProyect,idUser,tokenUser }) {
     createUser: idUser,
     proyect:id,
   });
-  
+  const taskSuccesCreate=async (msg)=>{
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "¡Proyecto "+`"`+ msg+`"` +" se a creado  exitosamente!",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    setTimeout(() => {
+     
+      navigate(`/trabajos/${id}`)
+    }, 500);
+  } 
  
 
   return (
@@ -126,14 +138,16 @@ function ModalTarea({ openModal, setOpenModal,idProyect,idUser,tokenUser }) {
                       ),
                     })}
                     onSubmit={async (values) => {
-                     
-                    //   const token = localStorage.getItem("token");
-                    //   const rta = await createProyectContext(values, token);
-                    //   if (rta.data.status === 200) {
-                    //     await proyectSuccesCreate(rta.data.data.name);
-                    //   } else {
-                    //     console.log("ERROR");
-                    //   }
+                      
+                      console.log("creatTaskContext", id, values ,tokenUser );
+                    
+                      const rta = await creatTaskContext(id,values,tokenUser);
+                        console.log("😉😉😉", rta);
+                        if (rta.status === 200) {
+                        await taskSuccesCreate(rta.data.name);
+                      } else {
+                        console.log("ERROR");
+                      }
                      }}
                     enableReinitialize={true}
                   >
@@ -214,17 +228,8 @@ function ModalTarea({ openModal, setOpenModal,idProyect,idUser,tokenUser }) {
                             <option value="Media">Media</option>
                             <option value="Alta">Alta</option>
                           </Field>
-                          {/* <Field
-                            type="text"
-                            name="priotity"
-                            id="prioridad"
-                            className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
-                            placeholder="Prioridad de la tarea"
-                            
-                            <option value=" ">Seleccionar Prioridad</option>
                          
-                          
-                          /> */}
+                         
                           <ErrorMessage
                             component="p"
                             className="text-red-500 text-[12px] font-bold uppercase font-mont"

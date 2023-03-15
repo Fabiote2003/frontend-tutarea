@@ -29,7 +29,7 @@ const Trabajo = () => {
           className='flex items-center gap-2 bg-fondo text-white uppercase text-center font-mont font-semibold p-2 mt-3 sm:mt-0 rounded-md'><img src='../src/assets/edit-alt-solid-24.png' className='md:w-10 md:h-10 lg:w-8 lg:h-8'/>Editar Trabajo</Link>  
         </div>
         <p className='font-mont font-bold mt-3 text-fondo'>Descripción: <span className='font-semibold text-[#777777]'>{proyect.description}</span></p>
-        <p className='uppercase text-xl text-center text-[#003049] font-black mt-3 font-inter'>entregar antes del {proyect.dateEnd?.split('T')[0]}</p>
+        <p className='uppercase text-xl text-center text-[#003049] font-black mt-3 font-inter'>entregar antes del {formatearFecha(proyect.dateEnd)}</p>
         <div className='flex flex-col mt-5 xl:flex-row w-full'>
             <div className='flex flex-col items-center p-5 lg:w-4/6'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>
@@ -50,17 +50,19 @@ const Trabajo = () => {
                   <img src='../../src/assets/down-arrow-circle-regular-24.png'/>
                   Ver Integrantes
                 </a>
-                <Tarea />
-                <Tarea />
-                <Tarea />
-                <Tarea />
-                <Tarea />
+                {proyect.task?.length > 0 ? proyect.task.map(t=>  <Tarea t={t} key={t.id} />)
+                                          : <span>aun no hay tareas asociadas al proyecto</span>}
+             
+               
             </div>
             <div className='p-2 flex flex-col w-full sm:w-10/12 mx-auto lg:w-2/6' id='integrantes'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4 md:text-center'>Integrantes</h1>
-                <Colaborador />
-                <Colaborador />
-                <Colaborador />
+                {
+                  proyect.collaborator?.length > 0 ? proyect.collaborator.map(c=>  <Colaborador c={c} key={c.id} />)
+                  : <span>aun no hay colaboradores en este proyecto al proyecto</span>
+                }
+                
+              
             </div>
         </div>
     </div>
