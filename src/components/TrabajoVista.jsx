@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { formatearFecha } from '../helpers/formaterFecha';
 import {useUser} from './../context/UserContext'
 const TrabajoVista = ({proyect}) => {
+
+ 
   const {auth}= useUser()
   return (
     <div className='bg-white p-4 flex flex-col items-center mb-5 rounded-md shadow-md w-full sm:w-11/12 sm:justify-between gap-2 sm:flex-row sm:gap-0'>

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {createTaskAPI} from './../apiReq/taskAPI'
+import {createTaskAPI, exchengeStatusAPI} from './../apiReq/taskAPI'
 
 const taskContext = createContext()
 
@@ -22,11 +22,22 @@ const creatTaskContext=async(idProyec,task,token)=>{
     }
 }
 
+const exchengeStatusContext=async(id,token)=>{
+    console.log("que llega aca",id,token );
+    try {
+        const res = await exchengeStatusAPI(id,token)
+        return res
+    } catch (error) {
+        
+    }
+}
+
 
     return(
         <taskContext.Provider 
         value={{
-            creatTaskContext
+            creatTaskContext,
+            exchengeStatusContext
         }}>
 
             {children}

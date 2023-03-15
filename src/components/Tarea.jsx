@@ -1,6 +1,27 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import {useTask} from './../context/TaskContext'
+import {useUser} from './../context/UserContext'
+import Swal from "sweetalert2";
 const Tarea = ({t}) => {
+  const {exchengeStatusContext}=useTask()
+  const {auth}=useUser()
+
+const exchangeStatus=async()=>{
+  //console.log("vine pa aca");
+  const res =  await exchengeStatusContext(t.id,auth.token)
+  if (res.status === 200) {
+    Swal.fire({
+      position: "center-center",
+      icon: "success",
+      title: `¡tarea modificada por ${res.data.name}!`,
+      showConfirmButton: false,
+      timer: 2500,
+    });
+   
+  }
+}
+
+
   return (
     <div className='font-open mt-5 bg-white p-5 rounded-lg shadow-sm flex flex-col xl:flex-row'>
         <div>
@@ -11,7 +32,15 @@ const Tarea = ({t}) => {
         </div>
         <div className='flex justify-center flex-wrap mt-3 xl:flex-col'>
             <button className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#4361EE]'>Editar</button>
-            <button className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#59D674]'>Completada</button>
+            {t.state === false ? (
+  <button onClick={() => exchangeStatus()} key={1} className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#daa506]'>
+    Incompleto
+  </button>
+) : (
+  <button onClick={() => exchangeStatus()} key={2} className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#59D674]'>
+    Completa
+  </button>
+)}
             <button className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#E63946]'>Eliminar</button>
         </div>
     </div>

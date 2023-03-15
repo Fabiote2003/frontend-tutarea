@@ -16,7 +16,7 @@ const Trabajo = () => {
 
   useEffect(() => {
     obtenerProyecto(params.id);
-  }, [])
+  }, [openModal])
   
   
   if(cargando) return 'Cargando...'

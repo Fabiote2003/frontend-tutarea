@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import {useNavigate} from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage} from "formik"; //, ErrorMessage
 import * as Yup from "yup";
 import Swal from "sweetalert2";
@@ -11,7 +12,7 @@ import {useTask} from './../context/TaskContext'
 function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
   const {creatTaskContext}=useTask()
   const {proyect}=useProyect()
-  
+  const navigate = useNavigate();
   const {id} = proyect //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
   const [task, setTask] = useState({
     name: "",
