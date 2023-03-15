@@ -33,7 +33,7 @@ const Trabajo = () => {
         <div className='flex flex-col mt-5 xl:flex-row w-full'>
             <div className='flex flex-col items-center p-5 lg:w-4/6'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>
-                <ModalTarea openModal={openModal} setOpenModal={setOpenModal}/> 
+                <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyect.id} idUser={auth.id} tokenUser={auth.token}/> 
                 <Progress done={50}/>
                 { auth.id == proyect.createUser ? <button 
                   className='md:self-start py-2 px-3 bg-[#6BDBD4] rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3'
