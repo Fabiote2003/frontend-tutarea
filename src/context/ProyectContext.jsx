@@ -11,7 +11,7 @@ export const ProyectProvaider =({children})=>{
 
   const [proyect, setProyect] = useState({})
   const [cargando, setCargando] = useState(false);
-  
+
   const obtenerProyecto = async (id) => {
     setCargando(true)
     const token = localStorage.getItem('token');
@@ -56,7 +56,8 @@ const listOneProyectContext=async(id,token)=>{
         createProyectContext,
         listOneProyectContext,
         obtenerProyecto,
-        proyect
+        proyect,
+        setProyect
        }}>
         {children}
        </proyectContext.Provider> 

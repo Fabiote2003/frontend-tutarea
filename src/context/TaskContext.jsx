@@ -12,9 +12,8 @@ export const useTask =()=>{
 
 export const TaskProvider =({children})=>{
 
-    const {proyect} = useProyect();
-
-
+    const {proyect, setProyect} = useProyect();
+    
 const creatTaskContext=async(idProyec,task,token)=>{
     console.log("😡😡😡",idProyec,task,token );
     try {
@@ -28,7 +27,11 @@ const creatTaskContext=async(idProyec,task,token)=>{
 const exchengeStatusContext=async(id,token)=>{
     console.log("que llega aca",id,token );
     try {
-        const res = await exchengeStatusAPI(id,token)
+        const res = await exchengeStatusAPI(id,token);
+        console.log(res)
+        const proyectoActualizado = {...proyect}
+        proyectoActualizado.task = proyectoActualizado.task.map(tareaState => tareaState.id === res.data.id ? res.data : tareaState);
+        setProyect(proyectoActualizado);
         return res
     } catch (error) {
         
