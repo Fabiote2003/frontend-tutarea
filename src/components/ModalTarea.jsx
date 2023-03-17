@@ -29,10 +29,11 @@ function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
       icon: "success",
       title: "¡Proyecto "+`"`+ msg+`"` +" se a creado  exitosamente!",
       showConfirmButton: false,
-      timer: 3000,
+      timer: 1000,
     });
+    setOpenModal(!openModal)
     setTimeout(() => {
-     
+      
       navigate(`/trabajos/${id}`)
     }, 500);
   } 

@@ -9,9 +9,9 @@ export const useProyect =()=>{
 
 export const ProyectProvaider =({children})=>{
 
-  const [proyect,setProyect] = useState({})
+  const [proyect, setProyect] = useState({})
   const [cargando, setCargando] = useState(false);
-
+  
   const obtenerProyecto = async (id) => {
     setCargando(true)
     const token = localStorage.getItem('token');

@@ -14,8 +14,11 @@ const Trabajo = () => {
   const [openModal, setOpenModal] = useState(false);
   const {auth}=useUser()
 
-  useEffect(() => {
-    obtenerProyecto(params.id);
+  useEffect( () => {
+    const obtenerProyectoParaTareas = async () => {
+      await obtenerProyecto(params.id);
+    }
+    obtenerProyectoParaTareas();
   }, [openModal])
   
   

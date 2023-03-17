@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {createTaskAPI, exchengeStatusAPI} from './../apiReq/taskAPI'
+import { useProyect } from "./ProyectContext";
 
 const taskContext = createContext()
 
@@ -10,6 +11,8 @@ export const useTask =()=>{
 }
 
 export const TaskProvider =({children})=>{
+
+    const {proyect} = useProyect();
 
 
 const creatTaskContext=async(idProyec,task,token)=>{

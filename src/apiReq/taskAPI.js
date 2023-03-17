@@ -12,6 +12,7 @@ export const createTaskAPI =async(idProyect,task,token)=>{
           return res.data
     } catch (error) {
         console.log("ERROR en taskAPI create");
+        console.log(error);
     }
 }
 
