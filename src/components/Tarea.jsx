@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useTask} from './../context/TaskContext'
 import {useUser} from './../context/UserContext'
 import Swal from "sweetalert2";
 import { useProyect } from '../context/ProyectContext';
 import { formatearFecha } from '../helpers/formaterFecha';
+import ModalTarea from './ModalTarea';
+
 const Tarea = ({t}) => {
   const {exchengeStatusContext}=useTask()
   const {auth}=useUser()
@@ -25,6 +27,7 @@ const Tarea = ({t}) => {
   }
 }
 
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <div className='font-open mt-5 bg-white p-5 rounded-lg shadow-sm flex flex-col xl:flex-row'>
@@ -36,18 +39,22 @@ const Tarea = ({t}) => {
            {t.state && (<p className='text-[#ffffff] bg-[#59D674] text-center w-80 p-1 rounded-lg mt-2 font-bold uppercase'>Completado por: {t.userStatusChange.name}</p>)}
         </div>
         <div className='flex justify-center flex-wrap mt-3 xl:flex-col'>
-            <button className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#4361EE]'>Editar</button>
+            <button 
+              className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#4361EE]'
+              onClick={() => setOpenModal(true)}
+              >Editar</button>
             {t.state === false ? (
-  <button onClick={() => exchangeStatus()} key={1} className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#daa506]'>
-    Incompleto
-  </button>
-) : (
-  <button onClick={() => exchangeStatus()} key={2} className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#59D674]'>
-    Completada
-  </button>
-)}
+              <button onClick={() => exchangeStatus()} key={1} className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#daa506]'>
+                Incompleto
+              </button>
+            ) : (
+              <button onClick={() => exchangeStatus()} key={2} className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#59D674]'>
+                Completada
+              </button>
+            )}
             <button className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#E63946]'>Eliminar</button>
         </div>
+        <ModalTarea openModal={openModal} setOpenModal={setOpenModal} tarea={t}/>
     </div>
   )
 }

@@ -9,9 +9,12 @@ import Swal from "sweetalert2";
 import { useProyect } from "./../context/ProyectContext";
 import {useTask} from './../context/TaskContext'    
 
-function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
-  const {creatTaskContext}=useTask()
+function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
+
+  const {creatTaskContext, updateTaskContext}=useTask()
   const {proyect}=useProyect()
+  console.log(proyect.dateEnd)
+
   const navigate = useNavigate();
   const {id} = proyect //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
   const [task, setTask] = useState({
@@ -23,6 +26,22 @@ function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
     createUser: idUser,
     proyect:id,
   });
+
+  useEffect(() => {
+    if(tarea?.id) {
+      setTask({
+        ...task,
+        descripcion: tarea.descripcion,
+        name: tarea.name,
+        dateEnd: tarea.dateEnd?.split('T')[0],
+        state: tarea.state,
+        priority: tarea.priority,
+        id: tarea.id
+      })
+    }
+  }, [openModal])
+
+
   const taskSuccesCreate=async (msg)=>{
     Swal.fire({
       position: "center",
@@ -105,7 +124,7 @@ function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
                     as="h1"
                     className="text-2xl uppercase font-mont text-center leading-6 font-bold text-gray-900"
                   >
-                    Nueva Tarea
+                    {tarea?.id ? 'EDITAR TAREA' : 'NUEVA TAREA'}
                   </Dialog.Title>
 
                   <Formik
@@ -134,14 +153,28 @@ function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
                           new Date(),
                           "La fecha no puede ser menor que la fecha actual"
                         ),
-                      // .max(new Date(proyect.dateEnd), "La fecha de entrega no puede ser superior a la fecha de entraga del proyecto"),
                       priority: Yup.string().required(
                         "debes seleccionar una prioridad de entraga para esta tarea"
                       ),
                     })}
                     onSubmit={async (values) => {
                       
-                      const tokenUser = localStorage.getItem('token')                      
+                      const tokenUser = localStorage.getItem('token')
+                      
+                      if(tarea?.id) {
+                        console.log(values);
+                        await updateTaskContext(values, tokenUser);
+                        setOpenModal(false);
+                        Swal.fire({
+                          position: "center",
+                          icon: "success",
+                          title: "¡Tarea ctualizada!",
+                          showConfirmButton: false,
+                          timer: 1000,
+                        });
+                        return
+                      }
+
                       const rta = await creatTaskContext(id,values,tokenUser);
                         console.log("😉😉😉", rta);
                         if (rta.status === 200) {
@@ -241,7 +274,7 @@ function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
                           type="submit"
                           className="p-3 w-full bg-fondo font-inter hover:bg-zinc-900 text-white uppercase font-bold text-center cursor-pointer transition-colors rounded"
                         >
-                          Crear Tarea
+                          {tarea?.id ? 'ACTUALIZAR TAREA' : 'CREAR TAREA'}
                         </button>
                       </Form>
                     )}

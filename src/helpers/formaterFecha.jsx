@@ -10,5 +10,7 @@ export const formatearFecha = fecha => {
         day: 'numeric'
     }
 
+    nuevaFecha.setDate(nuevaFecha.getDate() + 1);
+
     return nuevaFecha.toLocaleString('es-ES', opciones);
 }

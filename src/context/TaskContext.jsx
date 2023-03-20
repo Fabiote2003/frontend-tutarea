@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import clienteAxios from "../config/clienteAxios";
 import {createTaskAPI, exchengeStatusAPI} from './../apiReq/taskAPI'
 import { useProyect } from "./ProyectContext";
 
@@ -24,6 +25,21 @@ const creatTaskContext=async(idProyec,task,token)=>{
     }
 }
 
+const updateTaskContext = async (usuarioActualizado, token) => {
+    try {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        const {data} = await clienteAxios.patch(`/tarea/${usuarioActualizado.id}`, usuarioActualizado, config);
+        const proyectoActualizado = {...proyect}
+        proyectoActualizado.task = proyectoActualizado.task.map(tareaState => tareaState.id === data.data.id ? data.data : tareaState);
+        setProyect(proyectoActualizado)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const exchengeStatusContext=async(id,token)=>{
     console.log("que llega aca",id,token );
     try {
@@ -43,7 +59,8 @@ const exchengeStatusContext=async(id,token)=>{
         <taskContext.Provider 
         value={{
             creatTaskContext,
-            exchengeStatusContext
+            exchengeStatusContext,
+            updateTaskContext
         }}>
 
             {children}
