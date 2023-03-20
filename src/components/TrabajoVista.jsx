@@ -9,11 +9,11 @@ const TrabajoVista = ({proyect}) => {
   return (
     <div className='bg-white p-4 flex flex-col items-center mb-5 rounded-md shadow-md w-full sm:w-11/12 sm:justify-between gap-2 sm:flex-row sm:gap-0'>
         <div>
-            <h1 className='uppercase font-black font-inter text-xl text-[#1D3557] mx-2'>   {proyect.name}  {
-              auth.id == proyect.createUser ? <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-red-500 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline text-[0.75em] font-bold leading-none text-secondary-800">
+            <h1 className='uppercase font-black font-inter text-xl text-[#1D3557]'>   {proyect.name}  {
+              auth.id == proyect.createUser ? <span className="inline-block text-white ml-2 whitespace-nowrap rounded-[0.27rem] bg-green-500 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline text-[0.75em] font-bold leading-none text-secondary-800">
               Administrador
             </span> :
-            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-green-500 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline text-[0.75em] font-bold leading-none text-secondary-800">
+            <span className="inline-block whitespace-nowrap rounded-[0.27rem] bg-cyan-500 px-[0.65em] pt-[0.35em] pb-[0.25em] text-center align-baseline text-[0.75em] font-bold leading-none text-secondary-800">
             Colaborador
           </span>
 

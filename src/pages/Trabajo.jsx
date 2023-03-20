@@ -13,15 +13,31 @@ const Trabajo = () => {
   const params = useParams()
   const [openModal, setOpenModal] = useState(false);
   const {auth}=useUser()
+  const [porcentaje, setPorcentaje] = useState(0);
 
   useEffect( () => {
     const obtenerProyectoParaTareas = async () => {
       await obtenerProyecto(params.id);
     }
     obtenerProyectoParaTareas();
-  }, [openModal])
+  }, [params.id, openModal])
   
-  
+  let contadorTareasCompletadas;
+  useEffect(() => {
+      contadorTareasCompletadas = 0;
+      if(Object.keys(proyect).length > 0) {
+        proyect.task.forEach(tarea => {
+          if(tarea.state) {
+            return contadorTareasCompletadas++;
+          }
+        })
+        setPorcentaje((contadorTareasCompletadas * 100) / proyect.task.length);
+        console.log(porcentaje)
+      }
+  }, [proyect])
+
+  // console.log(contadorTareasCompletadas)
+
   if(cargando) return 'Cargando...'
   
   return (
@@ -36,8 +52,8 @@ const Trabajo = () => {
         <div className='flex flex-col mt-5 xl:flex-row w-full'>
             <div className='flex flex-col items-center p-5 lg:w-4/6'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>
-                <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyect.id} idUser={auth.id} tokenUser={auth.token}/> 
-                <Progress done={50}/>
+                <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyect.id} idUser={auth.id}/> 
+                <Progress done={porcentaje.toFixed(2)}/>
                 { auth.id == proyect.createUser ? <button 
                   className='md:self-start py-2 px-3 bg-[#6BDBD4] rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3'
                   onClick={() => setOpenModal(true)}

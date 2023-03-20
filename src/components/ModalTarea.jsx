@@ -141,8 +141,7 @@ function ModalTarea({ openModal, setOpenModal,idUser,tokenUser }) {
                     })}
                     onSubmit={async (values) => {
                       
-                      console.log("creatTaskContext", id, values ,tokenUser );
-                    
+                      const tokenUser = localStorage.getItem('token')                      
                       const rta = await creatTaskContext(id,values,tokenUser);
                         console.log("😉😉😉", rta);
                         if (rta.status === 200) {

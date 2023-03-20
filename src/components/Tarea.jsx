@@ -8,7 +8,7 @@ const Tarea = ({t}) => {
   const {exchengeStatusContext}=useTask()
   const {auth}=useUser()
   const {proyect} = useProyect();
-  console.log(proyect);
+
   const exchangeStatus=async()=>{
   const token = localStorage.getItem('token');
   //console.log("vine pa aca");
