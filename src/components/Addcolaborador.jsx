@@ -11,24 +11,17 @@ import Swal from "sweetalert2";
 
 export const Addcolaborador = ({idProyect}) => {
 
-    const [allUsers,setAllUsers]= useState([])
+  
     const [addIdUser,setAddIdUser]=useState({collaborator:""})
 
-    const {listAllUsers,auth}=useUser()
+    const {allusers}=useUser()
     const {addCollaboratorContext} = useProyect()
-    console.log("Todos Los Usuarios", allUsers);
-    const token = localStorage.getItem('token');
+
     
     
 
     
-    const getAllUsers=async()=>{
-        const {data} = await listAllUsers(token)
-        
-        //saco del array el usuario que esta logueado,de este modo evitamos una redundancia, ya que el creador del proyecto no puede ser colaborador
-        const rta = data.filter(user=> user.id !== auth.id)
-        setAllUsers(rta)
-    }
+ 
 
     const successAddCollaborator=()=>{
         Swal.fire({
@@ -38,12 +31,10 @@ export const Addcolaborador = ({idProyect}) => {
             showConfirmButton: false,
             timer: 1500,
           });
-          return
+          
     }
 
-    useEffect(()=>{
-        getAllUsers()
-    },[setAllUsers])
+
 
   return (
     <div>
@@ -87,7 +78,7 @@ export const Addcolaborador = ({idProyect}) => {
                           placeholder="Prioridad de la tarea"
                           name="collaborator">
                             <option value="">Colaboradores</option>
-                            {allUsers?.map(user=> <option key={user.id} value={user.id}>{user.name}</option>)}
+                            {allusers?.map(user=> <option key={user.id} value={user.id}>{user.name}</option>)}
                             
                            
                           </Field>

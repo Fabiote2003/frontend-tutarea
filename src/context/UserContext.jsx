@@ -15,6 +15,7 @@ export const UserProvaider = ({ children }) => {
   const navigate = useNavigate();
   
   const [allProyectByUser,setAllProyectByUser]=useState([]);
+  const [allusers,setAllUsers]=useState([])
   const [perfil, setPerfil] = useState({});
   //creo este estado asi, una ves registrodo lo redirecciono al login y cargo los datos sel usuario sin volver a solicitarlos
   const [userEmailForLogin, setUserEmailForLogin] = useState("");
@@ -26,8 +27,12 @@ export const UserProvaider = ({ children }) => {
 
   const listAllUsers=async(token)=>{
       try {
-        const rta = await listAllUsersAPI(token)
-        return rta
+        const {data}= await listAllUsersAPI(token)
+        console.log("lisAllusers",data,auth.id);
+        const userFilter = await data.filter(user=> user.id !== auth.id)
+        console.log("lisAllusers filtrado",userFilter,auth.id);
+        setAllUsers(userFilter)
+        
       } catch (error) {
         console.log("error en el context", error);
       }
@@ -42,6 +47,7 @@ export const UserProvaider = ({ children }) => {
     try {
       const data = await allPoryectByUserAPI(auth.id,token)
       setAllProyectByUser(data)
+      
     } catch (error) {
         console.log("error en el contex de usuario allPoryectByUserContext",error);
     }                                          
@@ -49,6 +55,13 @@ export const UserProvaider = ({ children }) => {
 
   useEffect(() => {
     allPoryectByUserContext();
+    const token = localStorage.getItem('token');
+    if(!token) {
+      return;
+    }
+    listAllUsers(token)
+    
+    
   }, [auth,navigate]);
 
   const loginContext = async (user) => {
@@ -148,7 +161,8 @@ export const UserProvaider = ({ children }) => {
         allProyectByUser,
         perfil,
         obtenerPerfil,
-        listAllUsers
+        allusers,
+        setAllUsers
       }}>
       {children}
     </userContext.Provider>

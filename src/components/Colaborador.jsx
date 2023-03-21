@@ -1,4 +1,5 @@
 import React from 'react'
+import {RiDeleteBinLine} from "react-icons/ri"
 
 const Colaborador = ({c}) => {
   return (
@@ -7,7 +8,7 @@ const Colaborador = ({c}) => {
         <p className='font-bold text-xl font-mont'>{c.name}</p>
         <p className='text-md font-mont text-[#B4B4B4]'>{c.email}</p>
       </div>
-      <button className='bg-[#E63946] py-1 px-3 text-white rounded-md font-bold w-2/3 sm:w-1/5 lg:w-2/5'>Eliminar</button>
+      <button className='bg-[#E63946] py-1 px-3 text-white rounded-md font-bold w-2/3 sm:w-1/5 lg:w-2/5'><RiDeleteBinLine/></button>
     </div>
   )
 }
