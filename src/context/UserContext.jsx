@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { allPoryectByUserAPI, loginAPI, perfilAPI, registerAPI } from "../apiReq/userAPI";
+import { allPoryectByUserAPI, loginAPI, perfilAPI, registerAPI,listAllUsersAPI } from "../apiReq/userAPI";
 import clienteAxios from "../config/clienteAxios";
 
 const userContext = createContext();
@@ -18,25 +18,29 @@ export const UserProvaider = ({ children }) => {
   const [perfil, setPerfil] = useState({});
   //creo este estado asi, una ves registrodo lo redirecciono al login y cargo los datos sel usuario sin volver a solicitarlos
   const [userEmailForLogin, setUserEmailForLogin] = useState("");
+  
   const [cargando, setCargando] = useState(true);
+  
   const [auth, setAuth] = useState({});
 
+
+  const listAllUsers=async(token)=>{
+      try {
+        const rta = await listAllUsersAPI(token)
+        return rta
+      } catch (error) {
+        console.log("error en el context", error);
+      }
+  }
 
   const allPoryectByUserContext= async() => {
 
     const token = localStorage.getItem('token');
-
-
     if(!token) {
       return;
     }
-    
-    const config = {
-      headers: { Authorization: `Bearer ${token}` }
-    };
-    
     try {
-      const {data} = await clienteAxios.get(`/usuario/proyectByUser/${auth.id}`,config)
+      const data = await allPoryectByUserAPI(auth.id,token)
       setAllProyectByUser(data)
     } catch (error) {
         console.log("error en el contex de usuario allPoryectByUserContext",error);
@@ -97,7 +101,7 @@ export const UserProvaider = ({ children }) => {
       const res = await perfilAPI(token);
 
       const resWithToken = {...res,token}
-      console.log("😪😪😪😪",resWithToken);
+      //console.log("😪😪😪😪",resWithToken);
       setAuth(resWithToken);
     } catch (error) {
       console.log("Error de perfil de usuario", error);
@@ -143,7 +147,8 @@ export const UserProvaider = ({ children }) => {
         cargando,
         allProyectByUser,
         perfil,
-        obtenerPerfil
+        obtenerPerfil,
+        listAllUsers
       }}>
       {children}
     </userContext.Provider>

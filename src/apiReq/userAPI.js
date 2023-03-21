@@ -1,4 +1,20 @@
 import clienteAxios from '../config/clienteAxios';
+
+
+//listAll
+export const listAllUsersAPI=async(token)=>{
+    try {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+          };
+        const {data} = await clienteAxios.get('/usuario',config)
+        console.log(data);
+        return data
+    } catch (error) {
+        console.log("error --->",error.message);
+    }
+}
+
 //Login 
 export const loginAPI =async(user)=>{
     
@@ -52,7 +68,7 @@ export const allPoryectByUserAPI=async(id,token)=>{
         const {data} = await clienteAxios.get(`/usuario/proyectByUser/${id}`,config)
         return data;
     } catch (error) {
-        console.log("Error", error);
+        console.log("Error", error.response);
         return error.response
     }
 }

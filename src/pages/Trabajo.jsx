@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Progress from '../components/Progress'
 import Tarea from '../components/Tarea';
 import Colaborador from '../components/Colaborador';
+import {Addcolaborador} from '../components/Addcolaborador'
 import ModalTarea from '../components/ModalTarea'
 import { Link, useParams } from 'react-router-dom';
 import {useProyect} from './../context/ProyectContext'
@@ -32,7 +33,7 @@ const Trabajo = () => {
           }
         })
         setPorcentaje((contadorTareasCompletadas * 100) / proyect.task.length);
-        console.log(porcentaje)
+        //console.log(porcentaje)
       }
   }, [proyect])
 
@@ -76,6 +77,7 @@ const Trabajo = () => {
             </div>
             <div className='p-2 flex flex-col w-full sm:w-10/12 mx-auto lg:w-2/6' id='integrantes'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4 md:text-center'>Integrantes</h1>
+                <Addcolaborador idProyect={proyect.id}/>
                 {
                   proyect.collaborator?.length > 0 ? proyect.collaborator.map(c=>  <Colaborador c={c} key={c.id} />)
                   : <span>aun no hay colaboradores en este proyecto al proyecto</span>

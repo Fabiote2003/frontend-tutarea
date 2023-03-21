@@ -1,5 +1,5 @@
 import React,{createContext,useContext,useState} from 'react'
-import {createProyectAPI,listOneProyectAPI} from './../apiReq/proyectAPI'
+import {createProyectAPI,listOneProyectAPI,addCollaboratorAPI} from './../apiReq/proyectAPI'
 const proyectContext = createContext()
 
 export const useProyect =()=>{
@@ -11,6 +11,17 @@ export const ProyectProvaider =({children})=>{
 
   const [proyect, setProyect] = useState({})
   const [cargando, setCargando] = useState(false);
+
+
+  const addCollaboratorContext=async(idProyect,token,idUser)=>{
+        try {
+            const rta = await addCollaboratorAPI(idProyect,token,idUser)
+            return rta
+        } catch (error) {
+            console.log("error en context 😡", error.message);
+            
+        }
+  }
 
   const obtenerProyecto = async (id) => {
     setCargando(true)
@@ -57,7 +68,8 @@ const listOneProyectContext=async(id,token)=>{
         listOneProyectContext,
         obtenerProyecto,
         proyect,
-        setProyect
+        setProyect,
+        addCollaboratorContext
        }}>
         {children}
        </proyectContext.Provider> 

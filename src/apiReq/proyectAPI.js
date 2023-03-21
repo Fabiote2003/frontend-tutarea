@@ -28,3 +28,19 @@ export const listOneProyectAPI=async(id,token)=>{
         console.log("error en el listOneProyectAPI API ",error.message);
     }
 }
+
+//Add Collaborator
+
+export const addCollaboratorAPI=async(idProyect,token,iduser)=>{
+    try {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+          };
+
+          const rta = await clienteAxios.post(`/proyecto/addcolaborator/${idProyect}`,iduser,config)
+          console.log("que me responde el back 🎉", rta);
+          return rta.data
+    } catch (error) {
+        console.log("error en el listOneProyectAPI API ",error.message);
+    }
+}
