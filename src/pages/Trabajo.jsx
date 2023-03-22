@@ -79,7 +79,7 @@ const Trabajo = () => {
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4 md:text-center'>Integrantes</h1>
                 <Addcolaborador idProyect={proyect.id}/>
                 {
-                  proyect.collaborator?.length > 0 ? proyect.collaborator.map(c=>  <Colaborador c={c} key={c.id} />)
+                  proyect.collaborator?.length > 0 ? proyect.collaborator.map(c=>  <Colaborador c={c} idProyect={proyect.id} key={c.id} />)
                   : <span>aun no hay colaboradores en este proyecto al proyecto</span>
                 }
                 

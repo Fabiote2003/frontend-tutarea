@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
+import {useNavigate} from 'react-router-dom'
 import {useUser} from './../context/UserContext'
 import {useProyect} from './../context/ProyectContext'
 
@@ -10,18 +10,13 @@ import Swal from "sweetalert2";
 
 
 export const Addcolaborador = ({idProyect}) => {
-
+  
   
     const [addIdUser,setAddIdUser]=useState({collaborator:""})
 
     const {allusers}=useUser()
     const {addCollaboratorContext} = useProyect()
 
-    
-    
-
-    
- 
 
     const successAddCollaborator=()=>{
         Swal.fire({
@@ -31,7 +26,17 @@ export const Addcolaborador = ({idProyect}) => {
             showConfirmButton: false,
             timer: 1500,
           });
-          
+         
+         
+    }
+    const errorAddCollaborator=(rta)=>{
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `${rta}`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
 
 
@@ -53,8 +58,13 @@ export const Addcolaborador = ({idProyect}) => {
                 try {
                     console.log("datos para agreagar un colaborador",idProyect,tokenUser,values);
                     const rta = await addCollaboratorContext(idProyect,tokenUser,values)
-                 if(rta.status === 200)
-                 successAddCollaborator()
+                 if(rta.status === 200){
+
+                   successAddCollaborator()
+                 }else{
+                  errorAddCollaborator(rta)
+                 }
+                 
                     
                 } catch (error) {
                     console.log("Error en el front 👽👽👽", error.message);
