@@ -7,9 +7,11 @@ import { formatearFecha } from '../helpers/formaterFecha';
 import ModalTarea from './ModalTarea';
 
 const Tarea = ({t}) => {
-  const {exchengeStatusContext}=useTask()
+  const {exchengeStatusContext, deleteTaskContext}=useTask()
   const {auth}=useUser()
   const {proyect} = useProyect();
+  const [openModal, setOpenModal] = useState(false);
+
 
   const exchangeStatus=async()=>{
   const token = localStorage.getItem('token');
@@ -27,7 +29,28 @@ const Tarea = ({t}) => {
   }
 }
 
-  const [openModal, setOpenModal] = useState(false);
+  const handleDelete = () => {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar esta tarea?',
+      text: "¡No podrás recuperarla!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!',
+      cancelButtonText: 'Cancelar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteTaskContext(t.id)
+        Swal.fire(
+          'Eliminada!',
+          '¡La tarea ha sido elimina!',
+          'success'
+        )
+      }
+    })
+  }
+
 
   return (
     <div className='font-open mt-5 bg-white p-5 rounded-lg shadow-sm flex flex-col xl:flex-row'>
@@ -52,7 +75,10 @@ const Tarea = ({t}) => {
                 Completada
               </button>
             )}
-            <button className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#E63946]'>Eliminar</button>
+            <button 
+              className='w-40 m-2 h-8 text-white font-inter uppercase rounded-md bg-[#E63946]'
+              onClick={handleDelete}
+            >Eliminar</button>
         </div>
         <ModalTarea openModal={openModal} setOpenModal={setOpenModal} tarea={t}/>
     </div>

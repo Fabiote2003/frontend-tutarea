@@ -1,5 +1,9 @@
 import React,{createContext,useContext,useState} from 'react'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import clienteAxios from '../config/clienteAxios'
 import {createProyectAPI,listOneProyectAPI} from './../apiReq/proyectAPI'
+import { useUser } from './UserContext'
 const proyectContext = createContext()
 
 export const useProyect =()=>{
@@ -11,7 +15,11 @@ export const ProyectProvaider =({children})=>{
 
   const [proyect, setProyect] = useState({})
   const [cargando, setCargando] = useState(false);
+  const [buscador, setBuscador] = useState(false);
+  const navigate = useNavigate();
 
+  const {setAllProyectByUser, allProyectByUser} = useUser();
+    console.log(allProyectByUser)
   const obtenerProyecto = async (id) => {
     setCargando(true)
     const token = localStorage.getItem('token');
@@ -51,13 +59,75 @@ const listOneProyectContext=async(id,token)=>{
 }
 
 
+const editarProyecto = async (id, proyectoActualizadoDatos, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+
+    try {
+        const {data} = await clienteAxios.patch(`/proyecto/${id}`, proyectoActualizadoDatos, config);
+        setProyect({
+            ...proyect,
+            ...data.data
+        })
+
+    navigate(-1)
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'El proyecto ha sido editado',
+        showConfirmButton: false,
+        timer: 1500
+    })
+
+
+    } catch (error) {
+        console.log(error);
+    }
+} 
+
+const eliminarProyecto = async (id) => {
+
+    const token = localStorage.getItem('token');
+    if(!token) {
+        return;
+    }
+
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+
+    try {
+        const {data} = await clienteAxios.delete(`/proyecto/${id}`, config);
+        const proyectosActualizados = [...allProyectByUser];
+        proyectosActualizados.filter(proyectoState => proyectoState.id !== id);
+        setAllProyectByUser(proyectosActualizados);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+    const resetearProyectoActual = ( ) => {
+        setProyect({});
+    }
+
+    const handleBuscador = () => {
+        setBuscador(!buscador);
+    }
+
     return (
        <proyectContext.Provider value={{
         createProyectContext,
         listOneProyectContext,
         obtenerProyecto,
         proyect,
-        setProyect
+        setProyect,
+        editarProyecto,
+        eliminarProyecto,
+        resetearProyectoActual,
+        handleBuscador,
+        buscador
        }}>
         {children}
        </proyectContext.Provider> 
