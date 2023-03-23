@@ -1,18 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik"; //, ErrorMessage
 import * as Yup from "yup";
 import Swal from "sweetalert2";
 
 import {useUser} from './../context/UserContext'
 import {useProyect} from './../context/ProyectContext'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 const FormularioTrabajo = () => {
-  
+
   const navigate = useNavigate();
   const {auth}=useUser()
-  const {createProyectContext}=useProyect()
+  const {createProyectContext, proyect, editarProyecto}=useProyect();
+  const params = useParams();
+  const [proyectoFormulario, setProyectoFormulario] = useState({
+      name: "",
+      description: "",
+      dateEnd: "",
+      customer: "",
+      createUser:auth.id 
+    });
+  
+  useEffect(() => {
+    if(params.id && proyect) {
+      setProyectoFormulario({
+        ...proyectoFormulario,
+        name: proyect.name,
+        description: proyect.description,
+        dateEnd: proyect.dateEnd.split('T')[0],
+        customer: proyect.customer
+      })
+    }
+  }, [params])
+
 
   const proyectSuccesCreate=async (msg)=>{
     Swal.fire({
@@ -27,17 +48,13 @@ const FormularioTrabajo = () => {
     }, 500);
   } 
 
-  const [proyect, setProyect] = useState({
-    name: "",
-    description: "",
-    dateEnd: "",
-    customer: "",
-    createUser:auth.id 
-  });
+
+
+  
 
   return (
     <Formik
-      initialValues={proyect}
+      initialValues={proyectoFormulario}
       validationSchema={Yup.object({
         name: Yup.string()
           .required("el nombre es requerido")
@@ -56,8 +73,19 @@ const FormularioTrabajo = () => {
           .max(90, "el nombre debe contener un maximo de 90 caracteres"),
       })}
       onSubmit={async (values,{resetForm}) => {
+
         const token = localStorage.getItem('token')
-        const rta= await createProyectContext(values,token)
+        if(!token) {
+          return;
+        }
+
+        if(params.id) {
+           await editarProyecto(params.id, values, token);
+           return;
+        }
+
+
+        const rta = await createProyectContext(values,token)
         if (rta.data.status === 200) {
           await proyectSuccesCreate(rta.data.data.name)
           resetForm({});
@@ -159,7 +187,7 @@ const FormularioTrabajo = () => {
           </div>
           <input
             type="submit"
-            value="Agregar Proyecto"
+            value={params.id ? "Editar Proyecto" : "Agregar Proyecto"}
             className="mx-auto block w-4/5 mt-5 text-white bg-fondo p-2 mb-3 rounded-md font-mont uppercase font-bold cursor-pointer hover:bg-zinc-900 transition-colors"
           />
         </Form>

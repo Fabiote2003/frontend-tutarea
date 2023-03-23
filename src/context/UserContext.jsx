@@ -149,6 +149,15 @@ export const UserProvaider = ({ children }) => {
     autenticarUsuario();
   }, [])
 
+
+  const cerrarSesionAuth = () => {
+    setAuth({});
+  }
+
+  const cerrarSesionProyectos = () => {
+    setAllProyectByUser([]);
+  }
+
   return (
     <userContext.Provider
       value={{
@@ -160,9 +169,16 @@ export const UserProvaider = ({ children }) => {
         cargando,
         allProyectByUser,
         perfil,
+<<<<<<< HEAD
         obtenerPerfil,
         allusers,
         setAllUsers
+=======
+        obtenerPerfil, 
+        setAllProyectByUser,
+        cerrarSesionAuth,
+        cerrarSesionProyectos
+>>>>>>> 7a4a9a0dc500ae248310b7960e496802a3b88dca
       }}>
       {children}
     </userContext.Provider>

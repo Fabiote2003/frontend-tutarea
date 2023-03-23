@@ -46,6 +46,7 @@ const Trabajo = () => {
         <div className='flex flex-col items-center lg:flex-row lg:justify-between mb-8'>
           <h1 className='text-3xl md:text-4xl font-bold font-inter text-fondo'>TRABAJO:{proyect.name} </h1>
           <Link 
+          to={`/trabajos/editar-trabajo/${proyect.id}`}
           className='flex items-center gap-2 bg-fondo text-white uppercase text-center font-mont font-semibold p-2 mt-3 sm:mt-0 rounded-md'><img src='../src/assets/edit-alt-solid-24.png' className='md:w-10 md:h-10 lg:w-8 lg:h-8'/>Editar Trabajo</Link>  
         </div>
         <p className='font-mont font-bold mt-3 text-fondo'>Descripción: <span className='font-semibold text-[#777777]'>{proyect.description}</span></p>
@@ -54,7 +55,7 @@ const Trabajo = () => {
             <div className='flex flex-col items-center p-5 lg:w-4/6'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>
                 <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyect.id} idUser={auth.id}/> 
-                <Progress done={porcentaje.toFixed(2)}/>
+                <Progress done={proyect.task?.length > 0 ? (porcentaje.toFixed(2)) : new Number(0).toFixed(2)}/>
                 { auth.id == proyect.createUser ? <button 
                   className='md:self-start py-2 px-3 bg-[#6BDBD4] rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3'
                   onClick={() => setOpenModal(true)}
@@ -71,7 +72,7 @@ const Trabajo = () => {
                   Ver Integrantes
                 </a>
                 {proyect.task?.length > 0 ? proyect.task.map(t=>  <Tarea t={t} key={t.id} />)
-                                          : <span>aun no hay tareas asociadas al proyecto</span>}
+                                          : <span className='uppercase p-2 font-semibold text-md font-mont'>no hay tareas asociadas al proyecto aún</span>}
              
                
             </div>

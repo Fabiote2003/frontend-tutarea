@@ -26,10 +26,12 @@ const creatTaskContext=async(idProyec,task,token)=>{
 }
 
 const updateTaskContext = async (usuarioActualizado, token) => {
+   
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+
     try {
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
 
         const {data} = await clienteAxios.patch(`/tarea/${usuarioActualizado.id}`, usuarioActualizado, config);
         const proyectoActualizado = {...proyect}
@@ -37,6 +39,26 @@ const updateTaskContext = async (usuarioActualizado, token) => {
         setProyect(proyectoActualizado)
     } catch (error) {
         console.log(error);
+    }
+}
+
+const deleteTaskContext = async (id) => {
+    const token = localStorage.getItem('token');
+    if(!token) {
+        return;
+    }
+
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+
+    try {
+        const {data} = await clienteAxios.delete(`/tarea/${id}`, config);
+        const proyectoActualizado = {...proyect};
+        proyectoActualizado.task = proyectoActualizado.task.filter(tareaState => tareaState.id !== id);
+        setProyect(proyectoActualizado);
+    } catch (error) {
+        console.log(error);   
     }
 }
 
@@ -60,7 +82,8 @@ const exchengeStatusContext=async(id,token)=>{
         value={{
             creatTaskContext,
             exchengeStatusContext,
-            updateTaskContext
+            updateTaskContext,
+            deleteTaskContext
         }}>
 
             {children}

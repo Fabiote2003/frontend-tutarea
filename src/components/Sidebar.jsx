@@ -1,8 +1,20 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useProyect } from '../context/ProyectContext';
 import {useUser} from './../context/UserContext'
+
 const Sidebar = ({setMostrarMenu}) => {
-  const {auth}=useUser()
+  const {auth, cerrarSesionAuth, cerrarSesionProyectos}=useUser();
+  const {resetearProyectoActual} = useProyect();
+
+  const handleLogout = () => {
+    cerrarSesionAuth();
+    cerrarSesionProyectos();
+    resetearProyectoActual();
+    localStorage.removeItem('token')
+  }
+
+
   return (
     <div className='flex flex-col items-center w-full'>
         <h1 className='text-5xl font-bold mb-14 md:text-4xl lg:text-5xl font-mont'>TuTarea</h1>
@@ -13,7 +25,7 @@ const Sidebar = ({setMostrarMenu}) => {
                 <NavLink onClick={() => setMostrarMenu(false)} to={"/trabajos/nuevo-trabajo"} className="nav-item"><img src='../../src/assets/add.png'/>Nuevo Proyecto</NavLink>
         </nav>
         <div className='flex-1 flex flex-col items-center justify-end gap-10 pb-4'>
-            <button className='font-semibold text-xl flex items-center gap-2 font-mont'><img src='../../src/assets/exit-solid-24.png'/>Cerrar Sesión</button>
+            <button className='font-semibold text-xl flex items-center gap-2 font-mont' onClick={handleLogout}><img src='../../src/assets/exit-solid-24.png'/>Cerrar Sesión</button>
             <h1 className='text-4xl font-bold text-[#C9C9C9] font-mont'>TuTarea</h1>
         </div>
     </div>
