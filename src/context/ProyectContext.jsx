@@ -1,13 +1,10 @@
 import React,{createContext,useContext,useState} from 'react'
-<<<<<<< HEAD
 import {createProyectAPI,listOneProyectAPI,addCollaboratorAPI,deleteCollaboratorAPI} from './../apiReq/proyectAPI'
-=======
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import clienteAxios from '../config/clienteAxios'
-import {createProyectAPI,listOneProyectAPI} from './../apiReq/proyectAPI'
+
 import { useUser } from './UserContext'
->>>>>>> 7a4a9a0dc500ae248310b7960e496802a3b88dca
 const proyectContext = createContext()
 
 export const useProyect =()=>{
@@ -22,7 +19,6 @@ export const ProyectProvaider =({children})=>{
   const [buscador, setBuscador] = useState(false);
   const navigate = useNavigate();
 
-<<<<<<< HEAD
     const deleteCollaboratorContext=async(idProyect,token,idUser)=>{
         try {
             console.log("en el context", idProyect,token,idUser);
@@ -44,10 +40,8 @@ export const ProyectProvaider =({children})=>{
         }
   }
 
-=======
   const {setAllProyectByUser, allProyectByUser} = useUser();
     console.log(allProyectByUser)
->>>>>>> 7a4a9a0dc500ae248310b7960e496802a3b88dca
   const obtenerProyecto = async (id) => {
     setCargando(true)
     const token = localStorage.getItem('token');
@@ -151,16 +145,13 @@ const eliminarProyecto = async (id) => {
         obtenerProyecto,
         proyect,
         setProyect,
-<<<<<<< HEAD
         addCollaboratorContext,
-        deleteCollaboratorContext
-=======
+        deleteCollaboratorContext,
         editarProyecto,
         eliminarProyecto,
         resetearProyectoActual,
         handleBuscador,
         buscador
->>>>>>> 7a4a9a0dc500ae248310b7960e496802a3b88dca
        }}>
         {children}
        </proyectContext.Provider> 

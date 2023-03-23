@@ -169,16 +169,12 @@ export const UserProvaider = ({ children }) => {
         cargando,
         allProyectByUser,
         perfil,
-<<<<<<< HEAD
-        obtenerPerfil,
         allusers,
-        setAllUsers
-=======
+        setAllUsers,
         obtenerPerfil, 
         setAllProyectByUser,
         cerrarSesionAuth,
         cerrarSesionProyectos
->>>>>>> 7a4a9a0dc500ae248310b7960e496802a3b88dca
       }}>
       {children}
     </userContext.Provider>
