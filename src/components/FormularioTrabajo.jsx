@@ -32,6 +32,7 @@ const FormularioTrabajo = () => {
         customer: proyect.customer
       })
     }
+  
   }, [params])
 
 
@@ -47,7 +48,6 @@ const FormularioTrabajo = () => {
       navigate("/trabajos")
     }, 500);
   } 
-
 
 
   

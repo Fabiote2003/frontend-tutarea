@@ -121,6 +121,7 @@ const eliminarProyecto = async (id) => {
 
     try {
         const {data} = await clienteAxios.delete(`/proyecto/${id}`, config);
+        console.log("log de data🤐🤐🤐",data);
         const proyectosActualizados = [...allProyectByUser];
         proyectosActualizados.filter(proyectoState => proyectoState.id !== id);
         setAllProyectByUser(proyectosActualizados);

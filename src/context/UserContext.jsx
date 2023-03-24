@@ -68,7 +68,7 @@ export const UserProvaider = ({ children }) => {
       try {
         const rta = await loginAPI(user);
         if (rta.status === 200) {
-          console.log("🔥😎🔥😎🔥😎" ,rta);
+         // console.log("🔥😎🔥😎🔥😎" ,rta);
             localStorage.setItem('token', rta.token);
             await obtenerPerfil(rta.token);
             await allPoryectByUserContext(rta.id, rta.token);
@@ -88,7 +88,7 @@ export const UserProvaider = ({ children }) => {
   };
 
   const registerContext = async (user) => {
-    console.log("que llega al context?????", user);
+   // console.log("que llega al context?????", user);
     try {
       const rta = await registerAPI(user);
       if (rta.status === 200) {

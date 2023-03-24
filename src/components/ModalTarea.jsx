@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage} from "formik"; //, ErrorMessage
 import * as Yup from "yup";
 import Swal from "sweetalert2";
-
+import {formatearFecha} from './../helpers/formaterFecha'
 
 import { useProyect } from "./../context/ProyectContext";
 import {useTask} from './../context/TaskContext'    
@@ -26,7 +26,7 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
     createUser: idUser,
     proyect:id,
   });
-
+  //console.log("fecha limite🔥🔥🔥🔥🔥",proyect.dateEnd.split('T')[0]);
   useEffect(() => {
     if(tarea?.id) {
       setTask({
@@ -152,7 +152,13 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
                         .min(
                           new Date(),
                           "La fecha no puede ser menor que la fecha actual"
-                        ),
+                        )
+                        .max(
+                          new Date(proyect.dateEnd.split('T')[0]),
+                         ` La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyect.dateEnd)}`
+                        )
+                        ,
+                      
                       priority: Yup.string().required(
                         "debes seleccionar una prioridad de entraga para esta tarea"
                       ),
