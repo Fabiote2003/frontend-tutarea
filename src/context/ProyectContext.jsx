@@ -78,15 +78,15 @@ const createProyectContext=async(proyect,token)=>{
             console.log("ERRRO en el createProyectContext catch",error);
         }
 }
-// const listOneProyectContext=async(id,token)=>{
-//     try {
-//         const rta = await listOneProyectAPI(id,token)
-//         return rta
+const listOneProyectContext=async(id,token)=>{
+    try {
+        let rta = await listOneProyectAPI(id,token)
+        return rta
         
-//     } catch (error) {
-//         console.log("ERRRO en el listOneProyectContext catch",error);
-//     }
-// }
+    } catch (error) {
+        console.log("ERRRO en el listOneProyectContext catch",error);
+    }
+}
 
 
 const editarProyecto = async (id, proyectoActualizadoDatos, token) => {
@@ -150,7 +150,7 @@ const eliminarProyecto = async (id) => {
     return (
        <proyectContext.Provider value={{
         createProyectContext,
-        // listOneProyectContext,
+         listOneProyectContext,
         obtenerProyecto,
         proyect,
         setProyect,

@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {useNavigate} from 'react-router-dom'
+import {useNavigate,useParams} from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage} from "formik"; //, ErrorMessage
 import * as Yup from "yup";
 import Swal from "sweetalert2";
@@ -9,16 +9,18 @@ import {formatearFecha} from './../helpers/formaterFecha'
 import { useProyect } from "./../context/ProyectContext";
 import {useTask} from './../context/TaskContext'    
 
-function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
+function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
 
   const {creatTaskContext, updateTaskContext}=useTask()
-  const {proyect}=useProyect()
- // console.log(proyect.dateEnd)
+  
+  const [proyectNew,setProyectNew]=useState()
+ const {proyect,listOneProyectContext}=useProyect()
 
+  const params= useParams()
   const navigate = useNavigate();
   
   //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
-  const {id} = proyect 
+ const {id} = proyect 
   const [task, setTask] = useState({
     name: "",
     descripcion: "",
@@ -28,9 +30,25 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
     createUser: idUser,
     proyect:id,
   });
-  //console.log("only proyect", proyect);
-  console.log("fecha limite🔥🔥🔥🔥🔥",proyect.dateEnd?.split('T')[0]);
-  //console.log("fecha limite por props🔥🔥🔥🔥🔥",dateEndProyect?.split('T')[0]);
+
+  useEffect( () => {
+    console.log("frist");
+    const token = localStorage.getItem('token');
+    if(!token) {
+      return;
+    }
+   async function cualquiere(){
+
+    const rta = await listOneProyectContext(params.id,token)
+      setProyectNew(rta.data)
+
+    }
+    cualquiere()
+
+  }, [])
+
+
+
   
   useEffect(() => {
     if(tarea?.id) {
@@ -64,6 +82,8 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
  
 
   return (
+    <>
+    {proyectNew && 
     <Transition.Root show={openModal} as={Fragment}>
       <Dialog
         as="div"
@@ -158,10 +178,10 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                           new Date(),
                           "La fecha no puede ser menor que la fecha actual"
                         )
-                        // .max(
-                        //   new Date((proyect.dateEnd.split('T')[0])),
-                        //  ` La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyect.dateEnd)}`
-                        // )
+                        .max(
+                          new Date((proyectNew.dateEnd.split('T')[0])),
+                         ` La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyectNew.dateEnd)}`
+                        )
                         ,
                       
                       priority: Yup.string().required(
@@ -186,12 +206,12 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                         return
                       }
 
-                      const rta = await creatTaskContext(id,values,tokenUser);
+                      const rta = await creatTaskContext(proyectNew.id,values,tokenUser);
                         console.log("😉😉😉", rta);
                         if (rta?.status === 200) {
                         await taskSuccesCreate(rta.data.name);
                       } else {
-                        console.log("ERROR");
+                        console.log("ERROR",error);
                       }
                      }}
                     enableReinitialize={true}
@@ -297,6 +317,8 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
         </div>
       </Dialog>
     </Transition.Root>
+}
+    </>
   );
 }
 

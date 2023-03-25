@@ -11,9 +11,12 @@ import { formatearFecha } from '../helpers/formaterFecha';
 import Swal from "sweetalert2";
 
 const Trabajo = () => {
-  const {obtenerProyecto, proyect, cargando} = useProyect();
+ // const navigate = useNavigate();
+  const {listOneProyectContext, cargando} = useProyect();
   
   const params = useParams()
+
+  const [proyectNew,setProyectNew]=useState()
   
   const [openModal, setOpenModal] = useState(false);
   
@@ -22,53 +25,72 @@ const Trabajo = () => {
   const [porcentaje, setPorcentaje] = useState(0);
 
   useEffect( () => {
-    const obtenerProyectoParaTareas = async () => {
-      await obtenerProyecto(params.id);
+    console.log("frist");
+    const token = localStorage.getItem('token');
+    if(!token) {
+      return;
     }
-    obtenerProyectoParaTareas();
-  }, [params.id, openModal])
+   async function cualquiere(){
 
-  // console.log("obtener proyecto---😪😪😪😪",obtenerProyecto);
-  // console.log("Proyect---",proyect);
+    const rta = await listOneProyectContext(params.id,token)
+      setProyectNew(rta.data)
+
+    }
+    cualquiere()
+    // const obtenerProyectoParaTareas = async () => {
+    //   await obtenerProyecto(params.id);
+    // }
+    // obtenerProyectoParaTareas();
+  }, [])
+useEffect(()=>{
+  console.log("obtener proyecto---😪😪😪😪",proyectNew);
+},[proyectNew])
+
+  // console.log("proyectNew---",proyectNew);
   let contadorTareasCompletadas;
   useEffect(() => {
       contadorTareasCompletadas = 0;
-      if(Object.keys(proyect).length > 0) {
-        proyect.task.forEach(tarea => {
-          if(tarea.state) {
-            return contadorTareasCompletadas++;
-          }
-        })
-        setPorcentaje((contadorTareasCompletadas * 100) / proyect.task.length);
-        //console.log(porcentaje)
+      // if(Object.keys(proyectNew).length > 0) {
+      //   proyectNew.task.forEach(tarea => {
+      //     if(tarea.state) {
+      //       return contadorTareasCompletadas++;
+      //     }
+      //   })
+      //   setPorcentaje((contadorTareasCompletadas * 100) / proyectNew.task.length);
+      //   //console.log(porcentaje)
         
-      }
-  }, [proyect])
+      // }
+  }, [proyectNew])
  
     
  
  useEffect(()=>{
-    console.log("proyect desde useefect", proyect);
- },[proyect])
+    console.log("proyectNew desde useefect", proyectNew);
+ },[proyectNew])
 
   if(cargando) return 'Cargando...'
   
   return (
+    <>
+    {
+      proyectNew && 
+   
     <div>
+      
         <div className='flex flex-col items-center lg:flex-row lg:justify-between mb-8'>
-          <h1 className='text-3xl md:text-4xl font-bold font-inter text-fondo'>TRABAJO:{proyect.name} </h1>
+          <h1 className='text-3xl md:text-4xl font-bold font-inter text-fondo'>TRABAJO:{proyectNew.name} </h1>
           <Link 
-          to={`/trabajos/editar-trabajo/${proyect.id}`}
+          to={`/trabajos/editar-trabajo/${proyectNew.id}`}
           className='flex items-center gap-2 bg-fondo text-white uppercase text-center font-mont font-semibold p-2 mt-3 sm:mt-0 rounded-md'><img src='../src/assets/edit-alt-solid-24.png' className='md:w-10 md:h-10 lg:w-8 lg:h-8'/>Editar Trabajo</Link>  
         </div>
-        <p className='font-mont font-bold mt-3 text-fondo'>Descripción: <span className='font-semibold text-[#777777]'>{proyect.description}</span></p>
-        <p className='uppercase text-xl text-center text-[#003049] font-black mt-3 font-inter'>Entregar antes del {formatearFecha(proyect.dateEnd)}</p>
+        <p className='font-mont font-bold mt-3 text-fondo'>Descripción: <span className='font-semibold text-[#777777]'>{proyectNew.description}</span></p>
+        <p className='uppercase text-xl text-center text-[#003049] font-black mt-3 font-inter'>Entregar antes del {formatearFecha(proyectNew.dateEnd)}</p>
         <div className='flex flex-col mt-5 xl:flex-row w-full'>
             <div className='flex flex-col items-center p-5 lg:w-4/6'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>
-                <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyect.id} idUser={auth.id} dateEndProyect={proyect.dateEnd}/> 
-                <Progress done={proyect.task?.length > 0 ? (porcentaje.toFixed(2)) : new Number(0).toFixed(2)}/>
-                { auth.id == proyect.createUser ? <button 
+                <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyectNew.id} idUser={auth.id} preyectNew={proyectNew}/> 
+                <Progress done={proyectNew.task?.length > 0 ? (porcentaje.toFixed(2)) : new Number(0).toFixed(2)}/>
+                { auth.id == proyectNew.createUser ? <button 
                   className='md:self-start py-2 px-3 bg-[#6BDBD4] rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3'
                   onClick={() => setOpenModal(true)}
                   >
@@ -83,16 +105,16 @@ const Trabajo = () => {
                   <img src='../../src/assets/down-arrow-circle-regular-24.png'/>
                   Ver Integrantes
                 </a>
-                {proyect.task?.length > 0 ? proyect.task.map(t=>  <Tarea t={t} key={t.id} />)
+                {proyectNew.task?.length > 0 ? proyectNew.task.map(t=>  <Tarea t={t} key={t.id} />)
                                           : <span className='uppercase p-2 font-semibold text-md font-mont'>no hay tareas asociadas al proyecto aún</span>}
              
                
             </div>
             <div className='p-2 flex flex-col w-full sm:w-10/12 mx-auto lg:w-2/6' id='integrantes'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4 md:text-center'>Integrantes</h1>
-                <Addcolaborador idProyect={proyect.id}/>
+                <Addcolaborador idProyect={proyectNew.id}/>
                 {
-                  proyect.collaborator?.length > 0 ? proyect.collaborator.map(c=>  <Colaborador c={c} idProyect={proyect.id} key={c.id} />)
+                  proyectNew.collaborator?.length > 0 ? proyectNew.collaborator.map(c=>  <Colaborador c={c} idProyect={proyectNew.id} key={c.id} />)
                   : <span>aun no hay colaboradores en este proyecto al proyecto</span>
                 }
                 
@@ -100,6 +122,8 @@ const Trabajo = () => {
             </div>
         </div>
     </div>
+     }
+    </>
   )
 }
 
