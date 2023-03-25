@@ -178,10 +178,10 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                       })}
                       onSubmit={async (values) => {
                         
+                        console.log("🎉🎉🎉🎉",values);
                         const tokenUser = localStorage.getItem('token')
                         
                         if(tarea?.id) {
-                        // console.log(values);
                           await updateTaskContext(values, tokenUser);
                           setOpenModal(false);
                           Swal.fire({

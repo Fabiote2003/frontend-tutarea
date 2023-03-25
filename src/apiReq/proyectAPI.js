@@ -30,7 +30,6 @@ export const listOneProyectAPI=async(id,token)=>{
 }
 
 //Add Collaborator
-
 export const addCollaboratorAPI=async(idProyect,token,iduser)=>{
     try {
         const config = {
