@@ -16,7 +16,7 @@ export const TaskProvider =({children})=>{
     const {proyect, setProyect} = useProyect();
     
 const creatTaskContext=async(idProyec,task,token)=>{
-    console.log("😡😡😡",idProyec,task,token );
+    //console.log("😡😡😡",idProyec,task,token );
     try {
         const res = await createTaskAPI(idProyec,task,token)
         return res
@@ -66,7 +66,7 @@ const exchengeStatusContext=async(id,token)=>{
     console.log("que llega aca",id,token );
     try {
         const res = await exchengeStatusAPI(id,token);
-        console.log(res)
+       // console.log(res)
         const proyectoActualizado = {...proyect}
         proyectoActualizado.task = proyectoActualizado.task.map(tareaState => tareaState.id === res.data.id ? res.data : tareaState);
         setProyect(proyectoActualizado);

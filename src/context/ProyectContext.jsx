@@ -15,13 +15,14 @@ export const useProyect =()=>{
 export const ProyectProvaider =({children})=>{
 
   const [proyect, setProyect] = useState({})
+  const [taskDue,setTaskDue] = useState([])
   const [cargando, setCargando] = useState(false);
   const [buscador, setBuscador] = useState(false);
   const navigate = useNavigate();
 
     const deleteCollaboratorContext=async(idProyect,token,idUser)=>{
         try {
-            console.log("en el context", idProyect,token,idUser);
+            //console.log("en el context", idProyect,token,idUser);
             const rta = await deleteCollaboratorAPI(idProyect,token,idUser)
             return rta
         } catch (error) {
@@ -41,8 +42,10 @@ export const ProyectProvaider =({children})=>{
   }
 
   const {setAllProyectByUser, allProyectByUser} = useUser();
-    console.log(allProyectByUser)
-  const obtenerProyecto = async (id) => {
+   // console.log(allProyectByUser)
+  
+  
+    const obtenerProyecto = async (id) => {
     setCargando(true)
     const token = localStorage.getItem('token');
     if(!token) {
@@ -52,6 +55,11 @@ export const ProyectProvaider =({children})=>{
 
     try {
         const res = await  listOneProyectAPI(id, token);
+        //console.log("😎😎😎",res);
+        // if (res.taskDue) {
+        //     setTaskDue(res.taskDue)
+        // }
+        // console.log("TASK DUEEEE",taskDue);    
         setProyect(res.data)
     } catch(error) {
         console.log('Error en obtener proyecto: ', error);
@@ -70,15 +78,15 @@ const createProyectContext=async(proyect,token)=>{
             console.log("ERRRO en el createProyectContext catch",error);
         }
 }
-const listOneProyectContext=async(id,token)=>{
-    try {
-        const rta = await listOneProyectAPI(id,token)
-        return rta
+// const listOneProyectContext=async(id,token)=>{
+//     try {
+//         const rta = await listOneProyectAPI(id,token)
+//         return rta
         
-    } catch (error) {
-        console.log("ERRRO en el listOneProyectContext catch",error);
-    }
-}
+//     } catch (error) {
+//         console.log("ERRRO en el listOneProyectContext catch",error);
+//     }
+// }
 
 
 const editarProyecto = async (id, proyectoActualizadoDatos, token) => {
@@ -142,7 +150,7 @@ const eliminarProyecto = async (id) => {
     return (
        <proyectContext.Provider value={{
         createProyectContext,
-        listOneProyectContext,
+        // listOneProyectContext,
         obtenerProyecto,
         proyect,
         setProyect,
@@ -152,6 +160,7 @@ const eliminarProyecto = async (id) => {
         eliminarProyecto,
         resetearProyectoActual,
         handleBuscador,
+        taskDue,
         buscador
        }}>
         {children}

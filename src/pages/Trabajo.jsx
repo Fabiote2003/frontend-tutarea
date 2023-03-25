@@ -8,12 +8,17 @@ import { Link, useParams } from 'react-router-dom';
 import {useProyect} from './../context/ProyectContext'
 import {useUser} from './../context/UserContext'  
 import { formatearFecha } from '../helpers/formaterFecha';
+import Swal from "sweetalert2";
 
 const Trabajo = () => {
   const {obtenerProyecto, proyect, cargando} = useProyect();
+  
   const params = useParams()
+  
   const [openModal, setOpenModal] = useState(false);
+  
   const {auth}=useUser()
+  
   const [porcentaje, setPorcentaje] = useState(0);
 
   useEffect( () => {
@@ -22,7 +27,9 @@ const Trabajo = () => {
     }
     obtenerProyectoParaTareas();
   }, [params.id, openModal])
-  
+
+  // console.log("obtener proyecto---😪😪😪😪",obtenerProyecto);
+  // console.log("Proyect---",proyect);
   let contadorTareasCompletadas;
   useEffect(() => {
       contadorTareasCompletadas = 0;
@@ -34,10 +41,15 @@ const Trabajo = () => {
         })
         setPorcentaje((contadorTareasCompletadas * 100) / proyect.task.length);
         //console.log(porcentaje)
+        
       }
   }, [proyect])
-
-  // console.log(contadorTareasCompletadas)
+ 
+    
+ 
+ useEffect(()=>{
+    console.log("proyect desde useefect", proyect);
+ },[proyect])
 
   if(cargando) return 'Cargando...'
   
@@ -54,7 +66,7 @@ const Trabajo = () => {
         <div className='flex flex-col mt-5 xl:flex-row w-full'>
             <div className='flex flex-col items-center p-5 lg:w-4/6'>
                 <h1 className='text-3xl md:text-4xl font-extrabold text-left font-mont text-fondo mb-4'>Tareas</h1>
-                <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyect.id} idUser={auth.id}/> 
+                <ModalTarea openModal={openModal} setOpenModal={setOpenModal} idProyect={proyect.id} idUser={auth.id} dateEndProyect={proyect.dateEnd}/> 
                 <Progress done={proyect.task?.length > 0 ? (porcentaje.toFixed(2)) : new Number(0).toFixed(2)}/>
                 { auth.id == proyect.createUser ? <button 
                   className='md:self-start py-2 px-3 bg-[#6BDBD4] rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3'

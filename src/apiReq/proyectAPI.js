@@ -22,7 +22,7 @@ export const listOneProyectAPI=async(id,token)=>{
           };
 
           const rta = await clienteAxios.get(`/proyecto/${id}`,config)
-         // console.log("API PROYECT  rta de listOneProyectAPI", rta);
+        // console.log("API PROYECT  rta de listOneProyectAPI", rta.data);
           return rta.data
     } catch (error) {
         console.log("error en el listOneProyectAPI API ",error.message);

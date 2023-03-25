@@ -13,7 +13,7 @@ const Busqueda = () => {
     const {handleBuscador, buscador } = useProyect();
     const {allProyectByUser} = useUser();
 
-    console.log(allProyectByUser)
+   // console.log(allProyectByUser)
 
     const proyectosFiltrados = busqueda === '' ? [] : allProyectByUser.filter((proyecto) => proyecto.name.toLowerCase().includes(busqueda.toLowerCase()))
     return (

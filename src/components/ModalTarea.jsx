@@ -9,14 +9,16 @@ import {formatearFecha} from './../helpers/formaterFecha'
 import { useProyect } from "./../context/ProyectContext";
 import {useTask} from './../context/TaskContext'    
 
-function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
+function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
 
   const {creatTaskContext, updateTaskContext}=useTask()
   const {proyect}=useProyect()
-  console.log(proyect.dateEnd)
+ // console.log(proyect.dateEnd)
 
   const navigate = useNavigate();
-  const {id} = proyect //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
+  
+  //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
+  const {id} = proyect 
   const [task, setTask] = useState({
     name: "",
     descripcion: "",
@@ -26,7 +28,10 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
     createUser: idUser,
     proyect:id,
   });
-  //console.log("fecha limite🔥🔥🔥🔥🔥",proyect.dateEnd.split('T')[0]);
+  //console.log("only proyect", proyect);
+  console.log("fecha limite🔥🔥🔥🔥🔥",proyect.dateEnd?.split('T')[0]);
+  //console.log("fecha limite por props🔥🔥🔥🔥🔥",dateEndProyect?.split('T')[0]);
+  
   useEffect(() => {
     if(tarea?.id) {
       setTask({
@@ -153,10 +158,10 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
                           new Date(),
                           "La fecha no puede ser menor que la fecha actual"
                         )
-                        .max(
-                          new Date(proyect.dateEnd.split('T')[0]),
-                         ` La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyect.dateEnd)}`
-                        )
+                        // .max(
+                        //   new Date((proyect.dateEnd.split('T')[0])),
+                        //  ` La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyect.dateEnd)}`
+                        // )
                         ,
                       
                       priority: Yup.string().required(
@@ -168,7 +173,7 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
                       const tokenUser = localStorage.getItem('token')
                       
                       if(tarea?.id) {
-                        console.log(values);
+                       // console.log(values);
                         await updateTaskContext(values, tokenUser);
                         setOpenModal(false);
                         Swal.fire({
@@ -183,7 +188,7 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea}) {
 
                       const rta = await creatTaskContext(id,values,tokenUser);
                         console.log("😉😉😉", rta);
-                        if (rta.status === 200) {
+                        if (rta?.status === 200) {
                         await taskSuccesCreate(rta.data.name);
                       } else {
                         console.log("ERROR");

@@ -28,9 +28,9 @@ export const UserProvaider = ({ children }) => {
   const listAllUsers=async(token)=>{
       try {
         const {data}= await listAllUsersAPI(token)
-        console.log("lisAllusers",data,auth.id);
+       // console.log("lisAllusers",data,auth.id);
         const userFilter = await data.filter(user=> user.id !== auth.id)
-        console.log("lisAllusers filtrado",userFilter,auth.id);
+       // console.log("lisAllusers filtrado",userFilter,auth.id);
         setAllUsers(userFilter)
         
       } catch (error) {

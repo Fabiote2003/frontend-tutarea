@@ -8,7 +8,7 @@ export const listAllUsersAPI=async(token)=>{
             headers: { Authorization: `Bearer ${token}` }
           };
         const {data} = await clienteAxios.get('/usuario',config)
-        console.log(data);
+       // console.log(data);
         return data
     } catch (error) {
         console.log("error --->",error.message);
