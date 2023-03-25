@@ -17,6 +17,8 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
 
   const navigate = useNavigate();
   
+  const [proyectDateEnd, proyectSetDateEnd] = useState()
+
   //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
   const {id} = proyect 
   const [task, setTask] = useState({
@@ -28,6 +30,12 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
     createUser: idUser,
     proyect:id,
   });
+
+  useEffect(() => {
+    const formattedDateEnd = proyect.dateEnd?.split('T')[0];
+    proyectSetDateEnd(formattedDateEnd);
+  }, [proyect])
+
   //console.log("only proyect", proyect);
   console.log("fecha limite🔥🔥🔥🔥🔥",proyect.dateEnd?.split('T')[0]);
   //console.log("fecha limite por props🔥🔥🔥🔥🔥",dateEndProyect?.split('T')[0]);
@@ -131,165 +139,166 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                   >
                     {tarea?.id ? 'EDITAR TAREA' : 'NUEVA TAREA'}
                   </Dialog.Title>
-
-                  <Formik
-                    initialValues={task}
-                    validationSchema={Yup.object({
-                      name: Yup.string()
-                        .required("el nombre es requerido")
-                        .min(
-                          3,
-                          "el nombre debe contener como minimo 3 caracteres"
-                        )
-                        .max(90),
-                      descripcion: Yup.string()
-                        .required("el campo es requerido")
-                        .min(
-                          3,
-                          "el nombre debe contener como minimo 3 caracteres"
-                        )
-                        .max(
-                          300,
-                          "el nombre debe contener un maximo de 300 caracteres"
+                  { proyectDateEnd &&
+                    <Formik
+                      initialValues={task}
+                      validationSchema={Yup.object({
+                        name: Yup.string()
+                          .required("el nombre es requerido")
+                          .min(
+                            3,
+                            "el nombre debe contener como minimo 3 caracteres"
+                          )
+                          .max(90),
+                        descripcion: Yup.string()
+                          .required("el campo es requerido")
+                          .min(
+                            3,
+                            "el nombre debe contener como minimo 3 caracteres"
+                          )
+                          .max(
+                            300,
+                            "el nombre debe contener un maximo de 300 caracteres"
+                          ),
+                        dateEnd: Yup.date()
+                          .required("La fecha es obligatoria")
+                          .min(
+                            new Date(),
+                            "La fecha no puede ser menor que la fecha actual"
+                          )
+                          .max(
+                            new Date(proyectDateEnd),
+                          `La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyectDateEnd)}`
+                          )
+                          ,
+                        
+                        priority: Yup.string().required(
+                          "debes seleccionar una prioridad de entraga para esta tarea"
                         ),
-                      dateEnd: Yup.date()
-                        .required("La fecha es obligatoria")
-                        .min(
-                          new Date(),
-                          "La fecha no puede ser menor que la fecha actual"
-                        )
-                        // .max(
-                        //   new Date((proyect.dateEnd.split('T')[0])),
-                        //  ` La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyect.dateEnd)}`
-                        // )
-                        ,
-                      
-                      priority: Yup.string().required(
-                        "debes seleccionar una prioridad de entraga para esta tarea"
-                      ),
-                    })}
-                    onSubmit={async (values) => {
-                      
-                      const tokenUser = localStorage.getItem('token')
-                      
-                      if(tarea?.id) {
-                       // console.log(values);
-                        await updateTaskContext(values, tokenUser);
-                        setOpenModal(false);
-                        Swal.fire({
-                          position: "center",
-                          icon: "success",
-                          title: "¡Tarea ctualizada!",
-                          showConfirmButton: false,
-                          timer: 1000,
-                        });
-                        return
-                      }
+                      })}
+                      onSubmit={async (values) => {
+                        
+                        const tokenUser = localStorage.getItem('token')
+                        
+                        if(tarea?.id) {
+                        // console.log(values);
+                          await updateTaskContext(values, tokenUser);
+                          setOpenModal(false);
+                          Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "¡Tarea ctualizada!",
+                            showConfirmButton: false,
+                            timer: 1000,
+                          });
+                          return
+                        }
 
-                      const rta = await creatTaskContext(id,values,tokenUser);
-                        console.log("😉😉😉", rta);
-                        if (rta?.status === 200) {
-                        await taskSuccesCreate(rta.data.name);
-                      } else {
-                        console.log("ERROR");
-                      }
-                     }}
-                    enableReinitialize={true}
-                  >
-                    {({ handleSubmit }) => (
-                      <Form onSubmit={handleSubmit} className="my-5">
-                        <div className="mb-5">
-                          <label
-                            className="text-gray-700 uppercase font-bold text-sm"
-                            htmlFor="nombre"
-                          >
-                            Nombre tarea
-                          </label>
-                          <Field
-                            name="name"
-                            type="text"
-                            id="nombre"
+                        const rta = await creatTaskContext(id,values,tokenUser);
+                          console.log("😉😉😉", rta);
+                          if (rta?.status === 200) {
+                          await taskSuccesCreate(rta.data.name);
+                        } else {
+                          console.log("ERROR");
+                        }
+                      }}
+                      enableReinitialize={true}
+                    >
+                      {({ handleSubmit }) => (
+                        <Form onSubmit={handleSubmit} className="my-5">
+                          <div className="mb-5">
+                            <label
+                              className="text-gray-700 uppercase font-bold text-sm"
+                              htmlFor="nombre"
+                            >
+                              Nombre tarea
+                            </label>
+                            <Field
+                              name="name"
+                              type="text"
+                              id="nombre"
+                              className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
+                              placeholder="Nombre de la tarea "
+                            />
+                            <ErrorMessage
+                              component="p"
+                              className="text-red-500 text-[12px] font-bold uppercase font-mont"
+                              name="name"
+                            />
+                          </div>
+                          <div className="mb-5">
+                            <label
+                              className="text-gray-700 uppercase font-bold text-sm"
+                              htmlFor="descripcion"
+                            >
+                              Descripción tarea
+                            </label>
+                            <Field
+                              name="descripcion"
+                              type="textarea"
+                              id="descripcion"
+                              className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
+                              placeholder="Descripción de la tarea "
+                            />
+                            <ErrorMessage
+                              component="p"
+                              className="text-red-500 text-[12px] font-bold uppercase font-mont"
+                              name="descripcion"
+                            />
+                          </div>
+                          <div className="mb-5">
+                            <label
+                              className="text-gray-700 uppercase font-bold text-sm"
+                              htmlFor="fecha-entrega"
+                            >
+                              Fecha de Entrega
+                            </label>
+                            <Field
+                              name="dateEnd"
+                              type="date"
+                              id="fecha-entrega"
+                              className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
+                            />
+                            <ErrorMessage
+                              component="p"
+                              className="text-red-500 text-[12px] font-bold uppercase font-mont"
+                              name="dateEnd"
+                            />
+                          </div>
+                          <div className="mb-5">
+                            <label
+                              className="text-gray-700 uppercase font-bold text-sm"
+                              htmlFor="prioridad"
+                            >
+                              Prioridad tarea
+                            </label>
+                            <Field as="select" 
                             className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
-                            placeholder="Nombre de la tarea "
-                          />
-                          <ErrorMessage
-                            component="p"
-                            className="text-red-500 text-[12px] font-bold uppercase font-mont"
-                            name="name"
-                          />
-                        </div>
-                        <div className="mb-5">
-                          <label
-                            className="text-gray-700 uppercase font-bold text-sm"
-                            htmlFor="descripcion"
+                            placeholder="Prioridad de la tarea"
+                            name="priority">
+                              <option value="">Seleccione Prioridad</option>
+                              <option value="Baja">Baja</option>
+                              <option value="Media">Media</option>
+                              <option value="Alta">Alta</option>
+                            </Field>
+                          
+                          
+                            <ErrorMessage
+                              component="p"
+                              className="text-red-500 text-[12px] font-bold uppercase font-mont"
+                              name="priority"
+                            />
+                          </div>
+                          <button
+                            type="submit"
+                            className="p-3 w-full bg-fondo font-inter hover:bg-zinc-900 text-white uppercase font-bold text-center cursor-pointer transition-colors rounded"
                           >
-                            Descripción tarea
-                          </label>
-                          <Field
-                            name="descripcion"
-                            type="textarea"
-                            id="descripcion"
-                            className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
-                            placeholder="Descripción de la tarea "
-                          />
-                          <ErrorMessage
-                            component="p"
-                            className="text-red-500 text-[12px] font-bold uppercase font-mont"
-                            name="descripcion"
-                          />
-                        </div>
-                        <div className="mb-5">
-                          <label
-                            className="text-gray-700 uppercase font-bold text-sm"
-                            htmlFor="fecha-entrega"
-                          >
-                            Fecha de Entrega
-                          </label>
-                          <Field
-                            name="dateEnd"
-                            type="date"
-                            id="fecha-entrega"
-                            className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
-                          />
-                          <ErrorMessage
-                            component="p"
-                            className="text-red-500 text-[12px] font-bold uppercase font-mont"
-                            name="dateEnd"
-                          />
-                        </div>
-                        <div className="mb-5">
-                          <label
-                            className="text-gray-700 uppercase font-bold text-sm"
-                            htmlFor="prioridad"
-                          >
-                            Prioridad tarea
-                          </label>
-                          <Field as="select" 
-                          className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
-                          placeholder="Prioridad de la tarea"
-                          name="priority">
-                            <option value="">Seleccione Prioridad</option>
-                            <option value="Baja">Baja</option>
-                            <option value="Media">Media</option>
-                            <option value="Alta">Alta</option>
-                          </Field>
-                         
-                         
-                          <ErrorMessage
-                            component="p"
-                            className="text-red-500 text-[12px] font-bold uppercase font-mont"
-                            name="priority"
-                          />
-                        </div>
-                        <button
-                          type="submit"
-                          className="p-3 w-full bg-fondo font-inter hover:bg-zinc-900 text-white uppercase font-bold text-center cursor-pointer transition-colors rounded"
-                        >
-                          {tarea?.id ? 'ACTUALIZAR TAREA' : 'CREAR TAREA'}
-                        </button>
-                      </Form>
-                    )}
-                  </Formik>
+                            {tarea?.id ? 'ACTUALIZAR TAREA' : 'CREAR TAREA'}
+                          </button>
+                        </Form>
+                      )}
+                    </Formik>
+                  }
                 </div>
               </div>
             </div>
