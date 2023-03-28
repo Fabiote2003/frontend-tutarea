@@ -24,6 +24,7 @@ export const ProyectProvaider =({children})=>{
         try {
             //console.log("en el context", idProyect,token,idUser);
             const rta = await deleteCollaboratorAPI(idProyect,token,idUser)
+            await obtenerProyecto(idProyect)
             return rta
         } catch (error) {
             console.log("error en context 😡", error.message);
@@ -34,6 +35,7 @@ export const ProyectProvaider =({children})=>{
   const addCollaboratorContext=async(idProyect,token,idUser)=>{
         try {
             const rta = await addCollaboratorAPI(idProyect,token,idUser)
+            await obtenerProyecto(idProyect)
             return rta
         } catch (error) {
             console.log("error en context 😡", error.message);
