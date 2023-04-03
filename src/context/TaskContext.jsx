@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useContext } from "react";
+
 import clienteAxios from "../config/clienteAxios";
 import {createTaskAPI, exchengeStatusAPI} from './../apiReq/taskAPI'
 import { useProyect } from "./ProyectContext";
+import {useUser} from './UserContext'
 
 const taskContext = createContext()
 
@@ -14,11 +15,14 @@ export const useTask =()=>{
 export const TaskProvider =({children})=>{
 
     const {proyect, setProyect} = useProyect();
+    const {setCargando} =useUser()
     
 const creatTaskContext=async(idProyec,task,token)=>{
+    setCargando(true)
     //console.log("😡😡😡",idProyec,task,token );
     try {
         const res = await createTaskAPI(idProyec,task,token)
+        setCargando(false)
         return res
     } catch (error) {
         console.log("Error en createTaskConetext create",error);
@@ -26,7 +30,7 @@ const creatTaskContext=async(idProyec,task,token)=>{
 }
 
 const updateTaskContext = async (usuarioActualizado, token) => {
-   
+   setCargando(true)
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
@@ -37,12 +41,14 @@ const updateTaskContext = async (usuarioActualizado, token) => {
         const proyectoActualizado = {...proyect}
         proyectoActualizado.task = proyectoActualizado.task.map(tareaState => tareaState.id === data.data.id ? data.data : tareaState);
         setProyect(proyectoActualizado)
+        setCargando(false)
     } catch (error) {
         console.log(error);
     }
 }
 
 const deleteTaskContext = async (id) => {
+    setCargando(true)
     const token = localStorage.getItem('token');
     if(!token) {
         return;
@@ -57,19 +63,22 @@ const deleteTaskContext = async (id) => {
         const proyectoActualizado = {...proyect};
         proyectoActualizado.task = proyectoActualizado.task.filter(tareaState => tareaState.id !== id);
         setProyect(proyectoActualizado);
+        setCargando(false)
     } catch (error) {
         console.log(error);   
     }
 }
 
 const exchengeStatusContext=async(id,token)=>{
-    console.log("que llega aca",id,token );
+    setCargando(true)
+    //console.log("que llega aca",id,token );
     try {
         const res = await exchengeStatusAPI(id,token);
        // console.log(res)
         const proyectoActualizado = {...proyect}
         proyectoActualizado.task = proyectoActualizado.task.map(tareaState => tareaState.id === res.data.id ? res.data : tareaState);
         setProyect(proyectoActualizado);
+        setCargando(false)
         return res
     } catch (error) {
         

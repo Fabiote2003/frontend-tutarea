@@ -9,15 +9,16 @@ import {useProyect} from './../context/ProyectContext'
 import {useUser} from './../context/UserContext'  
 import { formatearFecha } from '../helpers/formaterFecha';
 import Swal from "sweetalert2";
+import {Spinner} from './../components/Spinner'
 
 const Trabajo = () => {
-  const {obtenerProyecto, proyect, cargando} = useProyect();
+  const {obtenerProyecto, proyect} = useProyect();
   
   const params = useParams()
   
   const [openModal, setOpenModal] = useState(false);
   
-  const {auth}=useUser()
+  const {auth,cargando}=useUser()
   
   const [porcentaje, setPorcentaje] = useState(0);
 
@@ -48,12 +49,13 @@ const Trabajo = () => {
     
  
  useEffect(()=>{
-    console.log("proyect desde useefect", proyect);
+   // console.log("proyect desde useefect", proyect);
  },[proyect])
 
-  if(cargando) return 'Cargando...'
+ 
   
   return (
+    <>{cargando ? <Spinner/>:
     <div>
         <div className='flex flex-col items-center lg:flex-row lg:justify-between mb-8'>
           <h1 className='text-3xl md:text-4xl font-bold font-inter text-fondo'>TRABAJO:{proyect.name} </h1>
@@ -100,6 +102,7 @@ const Trabajo = () => {
             </div>
         </div>
     </div>
+    }</>
   )
 }
 

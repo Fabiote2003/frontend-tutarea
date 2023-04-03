@@ -5,9 +5,9 @@ import { useUser } from '../context/UserContext';
 const PrivateRoute = () => {
   const [mostrarMenu, setMostrarMenu] = useState(false);
 
-  const {auth, cargando} = useUser();
+  const {auth} = useUser();
   
-  if(cargando) return "Cargando..."
+
 
   return (
     <>

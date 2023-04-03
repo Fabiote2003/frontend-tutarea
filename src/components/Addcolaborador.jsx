@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useNavigate } from "react-router-dom";
+
 import { useUser } from "./../context/UserContext";
 import { useProyect } from "./../context/ProyectContext";
+import {Spinner} from "./../components/Spinner"
 
 import Swal from "sweetalert2";
 
 export const Addcolaborador = ({ idProyect }) => {
   const [addIdUser, setAddIdUser] = useState({ collaborator: "" });
 
-  const { allusers } = useUser();
+  const { allusers,cargando } = useUser();
   const { addCollaboratorContext } = useProyect();
   const [allUserList, setAllUserListe] = useState();
   
@@ -45,6 +46,7 @@ export const Addcolaborador = ({ idProyect }) => {
   };
 
   return (
+    <>{cargando ? <Spinner/> :
     <div>
       <Formik
         initialValues={addIdUser}
@@ -117,5 +119,6 @@ export const Addcolaborador = ({ idProyect }) => {
         )}
       </Formik>
     </div>
+    }</>
   );
 };

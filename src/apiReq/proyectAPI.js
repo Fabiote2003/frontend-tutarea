@@ -37,7 +37,7 @@ export const addCollaboratorAPI=async(idProyect,token,iduser)=>{
           };
 
           const rta = await clienteAxios.post(`/proyecto/addcolaborator/${idProyect}`,iduser,config)
-          console.log("que me responde el back 🎉", rta);
+         // console.log("que me responde el back 🎉", rta);
           return rta.data
     } catch (error) {
         return error.response.data.message;

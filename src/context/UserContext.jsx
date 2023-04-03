@@ -26,12 +26,14 @@ export const UserProvaider = ({ children }) => {
 
 
   const listAllUsers=async(token)=>{
+    setCargando(true)
       try {
         const {data}= await listAllUsersAPI(token)
        // console.log("lisAllusers",data,auth.id);
         const userFilter = await data.filter(user=> user.id !== auth.id)
        // console.log("lisAllusers filtrado",userFilter,auth.id);
         setAllUsers(userFilter)
+        setCargando(false)
         
       } catch (error) {
         console.log("error en el context", error);
@@ -39,7 +41,7 @@ export const UserProvaider = ({ children }) => {
   }
 
   const allPoryectByUserContext= async() => {
-
+    setCargando(true)
     const token = localStorage.getItem('token');
     if(!token) {
       return;
@@ -47,6 +49,7 @@ export const UserProvaider = ({ children }) => {
     try {
       const data = await allPoryectByUserAPI(auth.id,token)
       setAllProyectByUser(data)
+      setCargando(false)
       
     } catch (error) {
         console.log("error en el contex de usuario allPoryectByUserContext",error);
@@ -54,6 +57,7 @@ export const UserProvaider = ({ children }) => {
   }
 
   useEffect(() => {
+    
     allPoryectByUserContext();
     const token = localStorage.getItem('token');
     if(!token) {
@@ -65,6 +69,7 @@ export const UserProvaider = ({ children }) => {
   }, [auth,navigate]);
 
   const loginContext = async (user) => {
+    setCargando(true)
       try {
         const rta = await loginAPI(user);
         if (rta.status === 200) {
@@ -72,9 +77,11 @@ export const UserProvaider = ({ children }) => {
             localStorage.setItem('token', rta.token);
             await obtenerPerfil(rta.token);
             await allPoryectByUserContext(rta.id, rta.token);
+            setCargando(false)
             navigate('/trabajos')
             return true;
       }else {
+        setCargando(false)
         Swal.fire({
           icon: 'error',
           title: '¡Email o contraseña incorrectos!',
@@ -88,14 +95,17 @@ export const UserProvaider = ({ children }) => {
   };
 
   const registerContext = async (user) => {
+    setCargando(true)
    // console.log("que llega al context?????", user);
     try {
       const rta = await registerAPI(user);
       if (rta.status === 200) {
         setUserEmailForLogin(rta.data.email);
+        setCargando(false)
         return true
         
       } else {
+        setCargando(false)
         Swal.fire({
           icon: 'error',
           title: '¡Ya hay un usuario registrado con ese email!',
@@ -123,6 +133,7 @@ export const UserProvaider = ({ children }) => {
   } 
 
   useEffect(() => {
+    setCargando(true)
     const autenticarUsuario = async () => {
       const token = localStorage.getItem('token');
 
@@ -138,7 +149,7 @@ export const UserProvaider = ({ children }) => {
       try {
         const {data} = await clienteAxios.get('/usuario/giu', config);
         setAuth(data);
-        
+        setCargando(false)
       } catch (error) {
         console.log(error);
       }
@@ -174,7 +185,9 @@ export const UserProvaider = ({ children }) => {
         obtenerPerfil, 
         setAllProyectByUser,
         cerrarSesionAuth,
-        cerrarSesionProyectos
+        cerrarSesionProyectos,
+        cargando,
+        setCargando
       }}>
       {children}
     </userContext.Provider>

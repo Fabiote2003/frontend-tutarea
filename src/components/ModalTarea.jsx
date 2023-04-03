@@ -1,26 +1,31 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {useNavigate} from 'react-router-dom'
-import { Formik, Form, Field, ErrorMessage} from "formik"; //, ErrorMessage
+import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik"; //, ErrorMessage
 import * as Yup from "yup";
 import Swal from "sweetalert2";
-import {formatearFecha} from './../helpers/formaterFecha'
+import { formatearFecha } from "./../helpers/formaterFecha";
 
 import { useProyect } from "./../context/ProyectContext";
-import {useTask} from './../context/TaskContext'    
+import { useTask } from "./../context/TaskContext";
 
-function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
-
-  const {creatTaskContext, updateTaskContext}=useTask()
-  const {proyect}=useProyect()
- // console.log(proyect.dateEnd)
+function ModalTarea({
+  openModal,
+  setOpenModal,
+  idUser,
+  tarea,
+  dateEndProyect,
+}) {
+  const { creatTaskContext, updateTaskContext } = useTask();
+  const { proyect } = useProyect();
+  // console.log(proyect.dateEnd)
 
   const navigate = useNavigate();
-  
-  const [proyectDateEnd, proyectSetDateEnd] = useState()
+
+  const [proyectDateEnd, proyectSetDateEnd] = useState();
 
   //tengo de desestructurar xq de otra forma no me gusrda el ID en proyect, supongo xq de esta forma esta como un objeto
-  const {id} = proyect 
+  const { id } = proyect;
   const [task, setTask] = useState({
     name: "",
     descripcion: "",
@@ -28,48 +33,45 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
     priority: "",
     state: false,
     createUser: idUser,
-    proyect:id,
+    proyect: id,
   });
 
   useEffect(() => {
-    const formattedDateEnd = proyect.dateEnd?.split('T')[0];
+    const formattedDateEnd = proyect.dateEnd?.split("T")[0];
     proyectSetDateEnd(formattedDateEnd);
-  }, [proyect])
+  }, [proyect]);
 
   //console.log("only proyect", proyect);
-  console.log("fecha limite🔥🔥🔥🔥🔥",proyect.dateEnd?.split('T')[0]);
+  console.log("fecha limite🔥🔥🔥🔥🔥", proyect.dateEnd?.split("T")[0]);
   //console.log("fecha limite por props🔥🔥🔥🔥🔥",dateEndProyect?.split('T')[0]);
-  
+
   useEffect(() => {
-    if(tarea?.id) {
+    if (tarea?.id) {
       setTask({
         ...task,
         descripcion: tarea.descripcion,
         name: tarea.name,
-        dateEnd: tarea.dateEnd?.split('T')[0],
+        dateEnd: tarea.dateEnd?.split("T")[0],
         state: tarea.state,
         priority: tarea.priority,
-        id: tarea.id
-      })
+        id: tarea.id,
+      });
     }
-  }, [openModal])
+  }, [openModal]);
 
-
-  const taskSuccesCreate=async (msg)=>{
+  const taskSuccesCreate = async (msg) => {
     Swal.fire({
       position: "center",
       icon: "success",
-      title: "¡Proyecto "+`"`+ msg+`"` +" se a creado  exitosamente!",
+      title: "¡Proyecto " + `"` + msg + `"` + " se a creado  exitosamente!",
       showConfirmButton: false,
       timer: 1000,
     });
-    setOpenModal(!openModal)
+    setOpenModal(!openModal);
     setTimeout(() => {
-      
-      navigate(`/trabajos/${id}`)
+      navigate(`/trabajos/${id}`);
     }, 500);
-  } 
- 
+  };
 
   return (
     <Transition.Root show={openModal} as={Fragment}>
@@ -137,9 +139,9 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                     as="h1"
                     className="text-2xl uppercase font-mont text-center leading-6 font-bold text-gray-900"
                   >
-                    {tarea?.id ? 'EDITAR TAREA' : 'NUEVA TAREA'}
+                    {tarea?.id ? "EDITAR TAREA" : "NUEVA TAREA"}
                   </Dialog.Title>
-                  { proyectDateEnd &&
+                  {proyectDateEnd && (
                     <Formik
                       initialValues={task}
                       validationSchema={Yup.object({
@@ -168,20 +170,19 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                           )
                           .max(
                             new Date(proyectDateEnd),
-                          `La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(proyectDateEnd)}`
-                          )
-                          ,
-                        
+                            `La fecha no puede ser mayor a la fecha de entreaga del proyecto ${formatearFecha(
+                              proyectDateEnd
+                            )}`
+                          ),
                         priority: Yup.string().required(
                           "debes seleccionar una prioridad de entraga para esta tarea"
                         ),
                       })}
                       onSubmit={async (values) => {
-                        
-                        console.log("🎉🎉🎉🎉",values);
-                        const tokenUser = localStorage.getItem('token')
-                        
-                        if(tarea?.id) {
+                        console.log("🎉🎉🎉🎉", values);
+                        const tokenUser = localStorage.getItem("token");
+
+                        if (tarea?.id) {
                           await updateTaskContext(values, tokenUser);
                           setOpenModal(false);
                           Swal.fire({
@@ -191,12 +192,16 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                             showConfirmButton: false,
                             timer: 1000,
                           });
-                          return
+                          return;
                         }
 
-                        const rta = await creatTaskContext(id,values,tokenUser);
-                          console.log("😉😉😉", rta);
-                          if (rta?.status === 200) {
+                        const rta = await creatTaskContext(
+                          id,
+                          values,
+                          tokenUser
+                        );
+                        console.log("😉😉😉", rta);
+                        if (rta?.status === 200) {
                           await taskSuccesCreate(rta.data.name);
                         } else {
                           console.log("ERROR");
@@ -272,17 +277,18 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                             >
                               Prioridad tarea
                             </label>
-                            <Field as="select" 
-                            className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
-                            placeholder="Prioridad de la tarea"
-                            name="priority">
+                            <Field
+                              as="select"
+                              className="border-2 w-full mt-2 p-2 rounded-md placeholder-gray-400"
+                              placeholder="Prioridad de la tarea"
+                              name="priority"
+                            >
                               <option value="">Seleccione Prioridad</option>
                               <option value="Baja">Baja</option>
                               <option value="Media">Media</option>
                               <option value="Alta">Alta</option>
                             </Field>
-                          
-                          
+
                             <ErrorMessage
                               component="p"
                               className="text-red-500 text-[12px] font-bold uppercase font-mont"
@@ -293,12 +299,12 @@ function ModalTarea({ openModal, setOpenModal,idUser, tarea,dateEndProyect}) {
                             type="submit"
                             className="p-3 w-full bg-fondo font-inter hover:bg-zinc-900 text-white uppercase font-bold text-center cursor-pointer transition-colors rounded"
                           >
-                            {tarea?.id ? 'ACTUALIZAR TAREA' : 'CREAR TAREA'}
+                            {tarea?.id ? "ACTUALIZAR TAREA" : "CREAR TAREA"}
                           </button>
                         </Form>
                       )}
                     </Formik>
-                  }
+                  )}
                 </div>
               </div>
             </div>

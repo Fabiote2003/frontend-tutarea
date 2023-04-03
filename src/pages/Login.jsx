@@ -4,10 +4,11 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useUser } from "./../context/UserContext";
 import { RiEyeLine, RiEyeOffLine} from "react-icons/ri";
+import {Spinner} from './../components/Spinner'
 
 const Login = () => {
   
-  const { loginContext, userEmailForLogin, auth } = useUser();
+  const { loginContext, userEmailForLogin, auth ,cargando} = useUser();
   const navigate = useNavigate();
   
   // useEffect(() => {
@@ -28,6 +29,8 @@ const Login = () => {
     setShowPass(!showPass)
   }
   return (
+    <>{ cargando ? <Spinner/> :
+   
     <div className="flex font-mont">
       <div className="bg-[#A8DADC] w-1/2 h-screen"></div>
       <div className="absolute w-4/5 h-4/5 md:h-4/5 lg:h-3/4 left-0 right-0 top-0 bottom-0 m-auto flex flex-col md:flex-row shadow-xl">
@@ -132,6 +135,7 @@ const Login = () => {
 
       <div className="bg-[#2C4D7A] w-1/2"></div>
     </div>
+}</>
   );
 };
 
