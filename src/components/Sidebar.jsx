@@ -4,14 +4,16 @@ import { useProyect } from '../context/ProyectContext';
 import {useUser} from './../context/UserContext'
 
 const Sidebar = ({setMostrarMenu}) => {
-  const {auth, cerrarSesionAuth, cerrarSesionProyectos}=useUser();
+  const {auth, cerrarSesionAuth, cerrarSesionProyectos,cargando,setCargando}=useUser();
   const {resetearProyectoActual} = useProyect();
 
   const handleLogout = () => {
+    
     cerrarSesionAuth();
     cerrarSesionProyectos();
     resetearProyectoActual();
     localStorage.removeItem('token')
+    
   }
 
 

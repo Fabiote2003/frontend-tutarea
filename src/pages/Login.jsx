@@ -8,7 +8,7 @@ import {Spinner} from './../components/Spinner'
 
 const Login = () => {
   
-  const { loginContext, userEmailForLogin, auth ,cargando} = useUser();
+  const { loginContext, userEmailForLogin, auth ,cargando,setCargando} = useUser();
   const navigate = useNavigate();
   
   // useEffect(() => {
