@@ -42,7 +42,7 @@ function ModalTarea({
   }, [proyect]);
 
   //console.log("only proyect", proyect);
-  console.log("fecha limite🔥🔥🔥🔥🔥", proyect.dateEnd?.split("T")[0]);
+  //console.log("fecha limite🔥🔥🔥🔥🔥", proyect.dateEnd?.split("T")[0]);
   //console.log("fecha limite por props🔥🔥🔥🔥🔥",dateEndProyect?.split('T')[0]);
 
   useEffect(() => {
@@ -179,7 +179,7 @@ function ModalTarea({
                         ),
                       })}
                       onSubmit={async (values) => {
-                        console.log("🎉🎉🎉🎉", values);
+                       // console.log("🎉🎉🎉🎉", values);
                         const tokenUser = localStorage.getItem("token");
 
                         if (tarea?.id) {
@@ -200,7 +200,7 @@ function ModalTarea({
                           values,
                           tokenUser
                         );
-                        console.log("😉😉😉", rta);
+                       // console.log("😉😉😉", rta);
                         if (rta?.status === 200) {
                           await taskSuccesCreate(rta.data.name);
                         } else {

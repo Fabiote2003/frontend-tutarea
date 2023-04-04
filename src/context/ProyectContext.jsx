@@ -149,9 +149,9 @@ const eliminarProyecto = async (id) => {
 }
 
     const resetearProyectoActual = ( ) => {
-        setCargando(true)
+        
         setProyect({});
-        setCargando(false)
+        
     }
 
     const handleBuscador = () => {

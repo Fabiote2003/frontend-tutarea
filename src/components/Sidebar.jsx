@@ -1,18 +1,20 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink ,useNavigate} from 'react-router-dom';
 import { useProyect } from '../context/ProyectContext';
 import {useUser} from './../context/UserContext'
 
 const Sidebar = ({setMostrarMenu}) => {
   const {auth, cerrarSesionAuth, cerrarSesionProyectos,cargando,setCargando}=useUser();
   const {resetearProyectoActual} = useProyect();
-
+  const navigate = useNavigate()
+  
   const handleLogout = () => {
-    
+   
     cerrarSesionAuth();
     cerrarSesionProyectos();
     resetearProyectoActual();
     localStorage.removeItem('token')
+    navigate('/')
     
   }
 

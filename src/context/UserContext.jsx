@@ -162,17 +162,12 @@ export const UserProvaider = ({ children }) => {
 
 
   const cerrarSesionAuth = () => {
-    setCargando(true)
     setAuth({});
-    setCargando(false)
-    return
+    
   }
 
   const cerrarSesionProyectos = () => {
-    setCargando(true)
     setAllProyectByUser([]);
-    setCargando(false)
-    return
   }
 
   return (

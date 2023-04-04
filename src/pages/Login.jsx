@@ -29,7 +29,7 @@ const Login = () => {
     setShowPass(!showPass)
   }
   return (
-    <>{ cargando ? <Spinner/> :
+    <>
    
     <div className="flex font-mont">
       <div className="bg-[#A8DADC] w-1/2 h-screen"></div>
@@ -135,7 +135,7 @@ const Login = () => {
 
       <div className="bg-[#2C4D7A] w-1/2"></div>
     </div>
-}</>
+</>
   );
 };
 
