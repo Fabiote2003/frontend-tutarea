@@ -47,13 +47,13 @@ export const addCollaboratorAPI=async(idProyect,token,iduser)=>{
 
 export const deleteCollaboratorAPI=async(idProyect,token,id)=>{
     try {
-        console.log("que llega aca lpm",idProyect,token,id);
+       // console.log("que llega aca lpm",idProyect,token,id);
         const config = {
             headers: { Authorization: `Bearer ${token}` }
           };
 
           const rta = await clienteAxios.post(`/proyecto/deletecolaborator/${idProyect}`,id,config)
-          console.log("que me responde el back 🎉", rta);
+         //console.log("que me responde el back 🎉", rta);
           return rta.data
     } catch (error) {
         return error.response.data.message;

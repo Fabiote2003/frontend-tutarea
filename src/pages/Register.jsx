@@ -10,7 +10,7 @@ import {Spinner} from './../components/Spinner'
 import Swal from "sweetalert2";
 
 const Register = () => {
-  const { registerContext,cargando } = useUser();
+  const { registerContext,cargando,setCargando } = useUser();
 
   const navigate = useNavigate();
 
@@ -28,6 +28,7 @@ const Register = () => {
       showConfirmButton: false,
       timer: 2500,
     });
+    setCargando(false)
     navigate("/")
   } 
   return (
@@ -70,7 +71,7 @@ const Register = () => {
             })}
             onSubmit={async (values) => {
                   const rta = await registerContext(values);
-                  console.log("REGISTRANDO", rta);
+                  //console.log("REGISTRANDO", rta);
                   if (rta) {
                     userSuccesRegister()
                   }else {
@@ -191,7 +192,7 @@ const Register = () => {
           </Formik>
           <p className="text-gray-800 font-bold uppercase mt-5 text-center">
             Ya tienes cuenta?{" "}
-            <Link className="text-[#457B9D]" to={"/"}>
+            <Link className="text-[#457B9D]" to={"/"} onClick={()=>setCargando(false)}>
               Inicia sesión.
             </Link>
           </p>

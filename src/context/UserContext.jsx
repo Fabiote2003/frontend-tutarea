@@ -52,19 +52,20 @@ export const UserProvaider = ({ children }) => {
       setCargando(false)
       
     } catch (error) {
+      setCargando(false)
         console.log("error en el contex de usuario allPoryectByUserContext",error);
     }                                          
   }
 
   useEffect(() => {
-    
+    setCargando(true)
     allPoryectByUserContext();
     const token = localStorage.getItem('token');
     if(!token) {
       return;
     }
     listAllUsers(token)
-    
+    setCargando(false)
     
   }, [auth,navigate]);
 
@@ -77,8 +78,8 @@ export const UserProvaider = ({ children }) => {
             localStorage.setItem('token', rta.token);
             await obtenerPerfil(rta.token);
             await allPoryectByUserContext(rta.id, rta.token);
-            setCargando(false)
             navigate('/trabajos')
+            setCargando(false)
             return true;
       }else {
         setCargando(false)
@@ -119,7 +120,7 @@ export const UserProvaider = ({ children }) => {
   };
 
   const obtenerPerfil = async (token) => {
-
+      
     try {
       const res = await perfilAPI(token);
 

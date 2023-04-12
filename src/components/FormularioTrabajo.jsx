@@ -80,7 +80,8 @@ const FormularioTrabajo = () => {
         }
 
         if(params.id) {
-           await editarProyecto(params.id, values, token);
+            await editarProyecto(params.id, values, token);
+           
            return;
         }
 

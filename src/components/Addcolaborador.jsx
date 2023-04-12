@@ -38,10 +38,10 @@ export const Addcolaborador = ({ idProyect }) => {
   const errorAddCollaborator = (rta) => {
     Swal.fire({
       position: "center",
-      icon: "error",
+      icon: "warning",
       title: `${rta}`,
       showConfirmButton: false,
-      timer: 1500,
+      timer: 2000,
     });
   };
 
@@ -58,12 +58,12 @@ export const Addcolaborador = ({ idProyect }) => {
         onSubmit={async (values) => {
           const tokenUser = localStorage.getItem("token");
           try {
-            console.log(
-              "datos para agreagar un colaborador",
-              idProyect,
-              tokenUser,
-              values
-            );
+            // console.log(
+            //   "datos para agreagar un colaborador",
+            //   idProyect,
+            //   tokenUser,
+            //   values
+            // );
             const rta = await addCollaboratorContext(
               idProyect,
               tokenUser,

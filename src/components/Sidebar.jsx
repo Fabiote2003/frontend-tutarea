@@ -9,7 +9,7 @@ const Sidebar = ({setMostrarMenu}) => {
   const navigate = useNavigate()
   
   const handleLogout = () => {
-   
+   setCargando(false)
     cerrarSesionAuth();
     cerrarSesionProyectos();
     resetearProyectoActual();

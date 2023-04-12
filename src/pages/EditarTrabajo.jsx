@@ -26,7 +26,14 @@ const EditarTrabajo = () => {
         confirmButtonText: 'Si, eliminar!'
       }).then(async (result) => {
         if (result.isConfirmed) {
-          await eliminarProyecto(params.id)
+         const rta =  await eliminarProyecto(params.id)
+         console.log("respuesta de eliminar rta 🚀🚀🚀🚀", rta.message);
+         rta.message ? 
+          Swal.fire({
+            title: 'Error',
+            text: `${rta.message}`,
+            icon: 'warning'})
+         :
           Swal.fire(
             'Eliminado!',
             'Proyecto eliminado correctamente.',
