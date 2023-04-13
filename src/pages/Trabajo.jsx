@@ -10,6 +10,7 @@ import {useUser} from './../context/UserContext'
 import { formatearFecha } from '../helpers/formaterFecha';
 import Swal from "sweetalert2";
 import {Spinner} from './../components/Spinner'
+import {RiEditLine,RiGroupLine,RiAddBoxLine} from 'react-icons/ri'
 
 const Trabajo = () => {
   const {obtenerProyecto, proyect} = useProyect();
@@ -61,7 +62,7 @@ const Trabajo = () => {
           <h1 className='text-3xl md:text-4xl font-bold font-inter text-fondo'>TRABAJO:{proyect.name} </h1>
           <Link 
           to={`/trabajos/editar-trabajo/${proyect.id}`}
-          className='flex items-center gap-2 bg-fondo text-white uppercase text-center font-mont font-semibold p-2 mt-3 sm:mt-0 rounded-md'><img src='../src/assets/edit-alt-solid-24.png' className='md:w-10 md:h-10 lg:w-8 lg:h-8'/>Editar Trabajo</Link>  
+          className='flex items-center gap-2 bg-fondo text-white uppercase text-center font-mont font-semibold p-2 mt-3 sm:mt-0 rounded-md'><RiEditLine className='md:w-10 md:h-10 lg:w-8 lg:h-8'/>Editar Trabajo</Link>  
         </div>
         <p className='font-mont font-bold mt-3 text-fondo'>Descripción: <span className='font-semibold text-[#777777]'>{proyect.description}</span></p>
         <p className='uppercase text-xl text-center text-[#003049] font-black mt-3 font-inter'>Entregar antes del {formatearFecha(proyect.dateEnd)}</p>
@@ -74,7 +75,7 @@ const Trabajo = () => {
                   className='md:self-start py-2 px-3 bg-[#6BDBD4] rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3'
                   onClick={() => setOpenModal(true)}
                   >
-                  <img src='../../src/assets/plus.png'/>
+                  <RiAddBoxLine/>
                   Nueva tarea
                 </button> : 
                 null
@@ -82,7 +83,7 @@ const Trabajo = () => {
                 <a href='#integrantes'
                   className='md:self-start lg:hidden py-2 px-3 bg-fondo rounded-md uppercase font-inter font-bold text-white flex gap-2 mt-3 cursor-pointer'
                   >
-                  <img src='../../src/assets/down-arrow-circle-regular-24.png'/>
+                  <RiGroupLine/>
                   Ver Integrantes
                 </a>
                 {proyect.task?.length > 0 ? proyect.task.map(t=>  <Tarea t={t} key={t.id} />)

@@ -5,7 +5,7 @@ import {useUser}  from './../context/UserContext'
 const AuthLayout = () => {
   const {setCargando,cargando} = useUser()
 
-  
+ 
   return (
     <>
    <Outlet />  

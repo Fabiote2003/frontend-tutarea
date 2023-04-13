@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import FormularioTrabajo from '../components/FormularioTrabajo'
 import { useProyect } from '../context/ProyectContext';
 import Swal from 'sweetalert2';
+
+
 const EditarTrabajo = () => {
   const params = useParams();
   const {obtenerProyecto, proyect, eliminarProyecto} = useProyect();
@@ -27,19 +29,11 @@ const EditarTrabajo = () => {
       }).then(async (result) => {
         if (result.isConfirmed) {
          const rta =  await eliminarProyecto(params.id)
-         console.log("respuesta de eliminar rta 🚀🚀🚀🚀", rta.message);
-         rta.message ? 
-          Swal.fire({
-            title: 'Error',
-            text: `${rta.message}`,
-            icon: 'warning'})
-         :
-          Swal.fire(
-            'Eliminado!',
-            'Proyecto eliminado correctamente.',
-            'success'
-          )
-          navigate("/trabajos");
+        // console.log("respuesta de eliminar rta 🚀🚀🚀🚀", rta.message);
+         rta.message ? Swal.fire({title: 'Error',text: `${rta.message}`,icon: 'warning'})
+                     : Swal.fire('Eliminado!','Proyecto eliminado correctamente.','success')
+          
+           navigate("/trabajos");
         }
       })
 }

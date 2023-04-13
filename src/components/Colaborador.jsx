@@ -11,9 +11,9 @@ const deleteCollaborator=async()=>{
           const userId = {"id":c.id}
           const tokenUser = localStorage.getItem('token') 
           
-          console.log("Datos para eliminar",idProyect,tokenUser,userId);
+         // console.log("Datos para eliminar",idProyect,tokenUser,userId);
           const rta=await deleteCollaboratorContext(idProyect,tokenUser,userId)
-          console.log("en el front ",rta);
+          //console.log("en el front ",rta);
           if (rta.status === 200) {
             Swal.fire({
               position: "center",
