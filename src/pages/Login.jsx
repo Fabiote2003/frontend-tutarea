@@ -15,9 +15,6 @@ const Login = () => {
 
   const [loading,setLoading] = useState(false)
   
- 
-
-
   useEffect(() => {
     return () => {
       setLoading(false)
@@ -51,8 +48,8 @@ const Login = () => {
             })}
             onSubmit={async (values) => {
               setLoading(true)
-              await loginContext(values);
-              
+             const rta = await loginContext(values);
+            rta === false && setLoading(false)
               
 
             }}

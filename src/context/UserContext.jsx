@@ -89,6 +89,7 @@ export const UserProvaider = ({ children }) => {
           text: 'Intentalo de nuevo.',
           confirmButtonColor: "#457B9D"
         })
+        return false
       }
     } catch (error) {
       console.log("Error de login",error);
