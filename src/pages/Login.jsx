@@ -8,20 +8,21 @@ import {Spinner} from './../components/Spinner'
 
 const Login = () => {
   
-  const { loginContext, userEmailForLogin,cargando,setCargando} = useUser();
+  const { loginContext, userEmailForLogin} = useUser();
   const navigate = useNavigate();
+
+
+
+  const [loading,setLoading] = useState(false)
   
-  // useEffect(() => {
-  //   console.log(auth);
-  //   const redireccionarUsuario = () => {
-  //       if(auth.id) {
-  //         navigate("/trabajos")
-  //         return;
-  //       }
-  //       console.log('No se ha logueado nadie')
-  //   }
-  //   redireccionarUsuario();
-  // }, [auth, navigate]);
+ 
+
+
+  useEffect(() => {
+    return () => {
+      setLoading(false)
+    };
+  }, []);
 
   const [showPass,setShowPass]= useState(false)
   
@@ -29,8 +30,7 @@ const Login = () => {
     setShowPass(!showPass)
   }
   return (
-    <>
-   
+    <>{ loading ? <Spinner/> : 
     <div className="flex font-mont">
       <div className="bg-[#A8DADC] w-1/2 h-screen"></div>
       <div className="absolute w-4/5 h-4/5 md:h-4/5 lg:h-3/4 left-0 right-0 top-0 bottom-0 m-auto flex flex-col md:flex-row shadow-xl">
@@ -50,7 +50,11 @@ const Login = () => {
                 .max(15, "no debe super un maximo de 15 caracteres"),
             })}
             onSubmit={async (values) => {
-              const rta = await loginContext(values);
+              setLoading(true)
+              await loginContext(values);
+              
+              
+
             }}
             //esta funcio es de formik, y se utiliza para cargar los datos en el fomulario, es decir, formik carga inicialmete los datos vacios que se encuentran en el initialValue(),
             //luego cuando queremos editar y cargar con los datos que recogemos con el params, devemos recargar el formulario con los datos obtenido, enableReinitialize
@@ -135,7 +139,7 @@ const Login = () => {
 
       <div className="bg-[#2C4D7A] w-1/2"></div>
     </div>
-  
+  }
     </>
   );
 };

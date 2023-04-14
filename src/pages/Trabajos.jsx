@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Busqueda from '../components/Busqueda'
 import TrabajoVista from '../components/TrabajoVista'
 import { useProyect } from '../context/ProyectContext'
@@ -8,10 +8,15 @@ import {RiSearchLine} from 'react-icons/ri'
 const Trabajos = () => {
   const {allProyectByUser,cargando} = useUser()
   const {handleBuscador} = useProyect();
+  const [loading,setLoading] = useState(true)
+
+  useEffect(()=>{
+      allProyectByUser.length > 0 && setLoading(false)
+  },[allProyectByUser])
 
   return (
     <>
-   { cargando ? <Spinner/> :
+   { loading ? <Spinner/> :
     <div className='w-full '>
       <div className='flex flex-col justify-center sm:flex-row sm:justify-between sm:items-center'>
         <h1 className='text-3xl text-center uppercase font-bold font-mont sm:text-4xl'>Proyectos</h1>

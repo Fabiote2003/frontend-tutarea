@@ -70,7 +70,7 @@ export const UserProvaider = ({ children }) => {
   }, [auth,navigate]);
 
   const loginContext = async (user) => {
-    setCargando(true)
+   // setCargando(true)
       try {
         const rta = await loginAPI(user);
         if (rta.status === 200) {
@@ -79,7 +79,7 @@ export const UserProvaider = ({ children }) => {
             await obtenerPerfil(rta.token);
             await allPoryectByUserContext(rta.id, rta.token);
             navigate('/trabajos')
-            setCargando(false)
+           // setCargando(false)
             return true;
       }else {
         setCargando(false)

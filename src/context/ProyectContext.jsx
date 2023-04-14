@@ -98,7 +98,7 @@ const createProyectContext=async(proyect,token)=>{
 
 
 const editarProyecto = async (id, proyectoActualizadoDatos, token) => {
-    console.log("🚀🚀🚀🚀", id);
+   // console.log("🚀🚀🚀🚀", id);
     setCargando(true)
     const config = {
         headers: { Authorization: `Bearer ${token}` }
@@ -122,7 +122,7 @@ const editarProyecto = async (id, proyectoActualizadoDatos, token) => {
 
 
     } catch (error) {
-        console.log("👽👽👽👽", error);
+       // console.log("👽👽👽👽", error);
         Swal.fire({
             position: 'center',
             icon: 'warning',
@@ -147,7 +147,7 @@ const eliminarProyecto = async (id) => {
 
     try {
         const data = await clienteAxios.delete(`/proyecto/${id}`, config);
-        console.log("log de data🤐🤐🤐",data);
+      //  console.log("log de data🤐🤐🤐",data);
         const proyectosActualizados = [...allProyectByUser];
         proyectosActualizados.filter(proyectoState => proyectoState.id !== id);
         setAllProyectByUser(proyectosActualizados);
